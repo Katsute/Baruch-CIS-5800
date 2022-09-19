@@ -11,6 +11,8 @@ jobs:
     name: Java CI
     uses: Katsute/Workflows/.github/workflows/java.ci.yml@main
     with:
+      java-version: 8
+      codeql-java-version: 8
       package: true
       report: true
       test: false
