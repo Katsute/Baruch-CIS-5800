@@ -26,8 +26,6 @@ CIS 5800 - Information Technology Development and Project Management
       - **Manhattan**
       - **Queens**
       - **Staten Island**
-    - **Long Island Rail Road**
-    - **Metro-North Railroad**
     - **Bus Company**
 
  3. Save these zip files in the same folder as this program. The zip files **must** be named as the following:
@@ -38,10 +36,7 @@ CIS 5800 - Information Technology Development and Project Management
     - `google_transit_manhattan.zip`
     - `google_transit_queens.zip`
     - `google_transit_staten_island.zip`
-    - `google_transit_lirr.zip`
-    - `google_transit_mnr.zip`
     - `google_transit_bus_company.zip`
-
 
 #### 4️⃣ Setup the Program
 

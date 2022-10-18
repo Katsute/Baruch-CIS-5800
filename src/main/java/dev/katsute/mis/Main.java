@@ -59,9 +59,7 @@ final class Main {
             DataResource.create(DataResourceType.Bus_Queens, new File("google_transit_queens.zip")),
             DataResource.create(DataResourceType.Bus_StatenIsland, new File("google_transit_staten_island.zip")),
             DataResource.create(DataResourceType.Bus_Company, new File("google_transit_bus_company.zip")),
-            DataResource.create(DataResourceType.Subway, new File("google_transit_subway.zip")),
-            DataResource.create(DataResourceType.LongIslandRailroad, new File("google_transit_lirr.zip")),
-            DataResource.create(DataResourceType.MetroNorthRailroad, new File("google_transit_mnr.zip"))
+            DataResource.create(DataResourceType.Subway, new File("google_transit_subway.zip"))
         );
         // initialize server
         {
