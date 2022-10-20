@@ -52,7 +52,7 @@ CIS 5800 - Information Technology Development and Project Management
 
 ### 💼 License
 
-This project is released under the [GNU General Public License (GPL) v2.0](https://github.com/KatsuteDev/Baruch-CIS-5800/blob/main/LICENSE).
+This project is released under the [GNU General Public License (GPL) v2.0](https://github.com/Katsute/Baruch-CIS-5800/blob/main/LICENSE).
 
 ### ⚠️ Disclaimer
 
