@@ -19,8 +19,10 @@
 package dev.katsute.mis;
 
 import dev.katsute.onemta.MTA;
+import dev.katsute.onemta.attribute.Location;
 import dev.katsute.onemta.bus.Bus;
 import dev.katsute.onemta.subway.Subway;
+import dev.katsute.onemta.types.TransitVehicle;
 import dev.katsute.simplehttpserver.SimpleHttpExchange;
 import dev.katsute.simplehttpserver.SimpleHttpHandler;
 
@@ -71,8 +73,10 @@ final class RequestHandler implements SimpleHttpHandler {
                 }
             }
 
-            final double lat, lon;
-            {
+            final String id = query.get("id");
+
+            final Double lat, lon;
+            if(id == null){
                 if(!query.containsKey("latitude")){
                     exchange.send("{\n    \"error\": \"Missing latitude\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
@@ -94,32 +98,81 @@ final class RequestHandler implements SimpleHttpHandler {
                     exchange.send(String.format("{\n    \"error\": \"Unknown longitude '%s'\"\n}", query.get("longitude")), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
-            }
+            }else
+                lat = lon = null;
 
             if(type.equalsIgnoreCase("bus")){
-                final Bus.Route r;
-                try{
-                    r = mta.getBusRoute(route);
-                }catch(final NullPointerException ignored){
-                     exchange.send(String.format("{\n    \"error\": \"Failed to find route '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
-                    return;
-                }
-
                 final Bus.Vehicle bus;
+                if(id == null){
+                    final Bus.Route r;
+                    try{
+                        r = mta.getBusRoute(route);
+                    }catch(final NullPointerException ignored){
+                        exchange.send(String.format("{\n    \"error\": \"Failed to find route '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        return;
+                    }
 
-                // todo: guess vehicle
-            }else if(type.equalsIgnoreCase("subway")){
-                final Subway.Route s;
-                try{
-                    s = mta.getSubwayRoute(route);
-                }catch(final NullPointerException ignored){
-                     exchange.send(String.format("{\n    \"error\": \"Failed to find route '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                    Bus.Vehicle buf = null;
+                    Double min = null;
+                    for(final Bus.Vehicle vehicle : r.getVehicles()){
+                        double dist = distance(lon, lat, vehicle.getLongitude(), vehicle.getLatitude());
+                        if(min == null || dist < min){
+                            min = dist;
+                            buf = vehicle;
+                        }
+                    }
+                    bus = buf;
+                }else
+                    try{
+                        bus = mta.getBus(Integer.parseInt(id));
+                    }catch(final NumberFormatException ignored){
+                        exchange.send(String.format("{\n    \"error\": \"Failed to find bus '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        return;
+                    }
+
+                if(bus == null){
+                    exchange.send("{\n    \"error\": \"Failed to find bus\"\n}", HttpURLConnection.HTTP_NOT_FOUND);
                     return;
                 }
 
+                // todo: return data
+                exchange.send(HttpURLConnection.HTTP_NOT_FOUND);
+            }else if(type.equalsIgnoreCase("subway")){
                 final Subway.Vehicle subway;
+                if(id == null){
+                    final Subway.Route r;
+                    try{
+                        r = mta.getSubwayRoute(route);
+                    }catch(final NullPointerException ignored){
+                        exchange.send(String.format("{\n    \"error\": \"Failed to find route '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        return;
+                    }
 
-                // todo: guess vehicle
+                    Subway.Vehicle buf = null;
+                    Double min = null;
+                    for(final Subway.Vehicle vehicle : r.getVehicles()){
+                        double dist = distance(lon, lat, vehicle.getStop().getLongitude(), vehicle.getStop().getLatitude());
+                        if(min == null || dist < min){
+                            min = dist;
+                            buf = vehicle;
+                        }
+                    }
+                    subway = buf;
+                }else
+                    try{
+                        subway = mta.getSubwayTrain(id);
+                    }catch(final NumberFormatException ignored){
+                        exchange.send(String.format("{\n    \"error\": \"Failed to find bus '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        return;
+                    }
+
+                if(subway == null){
+                    exchange.send("{\n    \"error\": \"Failed to find subway\"\n}", HttpURLConnection.HTTP_NOT_FOUND);
+                    return;
+                }
+
+                // todo: return data
+                exchange.send(HttpURLConnection.HTTP_NOT_FOUND);
             }
         }catch(final Throwable e){ // uncaught errors
             final StringWriter sw = new StringWriter();
@@ -132,5 +185,24 @@ final class RequestHandler implements SimpleHttpHandler {
             exchange.close();
         }
     }
+
+    @SuppressWarnings("NonAsciiCharacters")
+    private static double distance(final double long1, final double lat1, final double long2, final double lat2){
+        final double φ1 = Math.toRadians(lat1);
+        final double φ2 = Math.toRadians(lat2);
+        final double λ1 = Math.toRadians(long1);
+        final double λ2 = Math.toRadians(long2);
+        final int rad = 6_371_000; // Earth's radius in meters
+
+        return 2 * rad * Math.asin(
+            Math.sqrt(
+                Math.pow(Math.sin((φ2-φ1)/2), 2) +
+                (Math.cos(φ1) *
+                Math.cos(φ2) *
+                Math.pow(Math.sin((λ2-λ1)/2), 2))
+            )
+        );
+    }
+
 
 }
