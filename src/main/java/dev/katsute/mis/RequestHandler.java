@@ -135,8 +135,41 @@ final class RequestHandler implements SimpleHttpHandler {
                     return;
                 }
 
-                // todo: return data
-                exchange.send(HttpURLConnection.HTTP_NOT_FOUND);
+                final Bus.Route r = bus.getRoute();
+                final Bus.Trip t = bus.getTrip();
+
+                final StringBuilder trip = new StringBuilder();
+                trip.append("[");
+                if(t != null){
+                    Bus.TripStop[] tripStops = t.getTripStops();
+                    for(int i = 0; i < tripStops.length; i++){
+                        final Bus.TripStop ts = tripStops[i];
+                        trip.append('"').append(ts.getStopName()).append('"');
+                        if(i < tripStops.length - 1)
+                            trip.append(", ");
+                    }
+                }
+                trip.append("]");
+
+                exchange.send(
+                    "{" +
+                        "\"vehicle\": {" +
+                            "\"id\": " + bus.getVehicleID() + ", " +
+                            "\"express\": " + bus.isExpress() + ", " +
+                            "\"limited\": " + bus.isLimited() + ", " +
+                            "\"select\": " + bus.isSelectBusService() + ", " +
+                            "\"shuttle\": " + bus.isShuttle() +
+                        "}," +
+                        "\"route\": {" +
+                            "\"name\": \"" + r.getRouteName() + "\", " +
+                            "\"shortName\": \"" + r.getRouteShortName() + "\", " +
+                            "\"description\": \"" + r.getRouteDescription() + "\", " +
+                            "\"color\": \"" + r.getRouteColor() + "\", " +
+                            "\"textColor\": \"" + r.getRouteTextColor() +
+                        "}," +
+                        "\"trip\": " + trip +
+                    "}"
+                );
             }else if(type.equalsIgnoreCase("subway")){
                 final Subway.Vehicle subway;
                 if(id == null){
@@ -171,8 +204,38 @@ final class RequestHandler implements SimpleHttpHandler {
                     return;
                 }
 
-                // todo: return data
-                exchange.send(HttpURLConnection.HTTP_NOT_FOUND);
+                final Subway.Route r = subway.getRoute();
+                final Subway.Trip t = subway.getTrip();
+
+                final StringBuilder trip = new StringBuilder();
+                trip.append("[");
+                if(t != null){
+                    Subway.TripStop[] tripStops = t.getTripStops();
+                    for(int i = 0; i < tripStops.length; i++){
+                        final Subway.TripStop ts = tripStops[i];
+                        trip.append('"').append(ts.getStop().getStopName()).append('"');
+                        if(i < tripStops.length - 1)
+                            trip.append(", ");
+                    }
+                }
+                trip.append("]");
+
+                exchange.send(
+                    "{" +
+                        "\"vehicle\": {" +
+                            "\"id\": " + subway.getVehicleID() + ", " +
+                            "\"express\": " + subway.isExpress() +
+                        "}," +
+                        "\"route\": {" +
+                            "\"name\": \"" + r.getRouteName() + "\", " +
+                            "\"shortName\": \"" + r.getRouteShortName() + "\", " +
+                            "\"description\": \"" + r.getRouteDescription() + "\", " +
+                            "\"color\": \"" + r.getRouteColor() + "\", " +
+                            "\"textColor\": \"" + r.getRouteTextColor() +
+                        "}," +
+                        "\"trip\": " + trip +
+                    "}"
+                );
             }
         }catch(final Throwable e){ // uncaught errors
             final StringWriter sw = new StringWriter();
@@ -203,6 +266,5 @@ final class RequestHandler implements SimpleHttpHandler {
             )
         );
     }
-
 
 }
