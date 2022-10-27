@@ -19,10 +19,8 @@
 package dev.katsute.mis;
 
 import dev.katsute.onemta.MTA;
-import dev.katsute.onemta.attribute.Location;
 import dev.katsute.onemta.bus.Bus;
 import dev.katsute.onemta.subway.Subway;
-import dev.katsute.onemta.types.TransitVehicle;
 import dev.katsute.simplehttpserver.SimpleHttpExchange;
 import dev.katsute.simplehttpserver.SimpleHttpHandler;
 
