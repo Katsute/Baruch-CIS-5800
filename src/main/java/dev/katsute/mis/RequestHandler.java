@@ -163,7 +163,7 @@ final class RequestHandler implements SimpleHttpHandler {
                             "\"shortName\": \"" + r.getRouteShortName() + "\", " +
                             "\"description\": \"" + r.getRouteDescription() + "\", " +
                             "\"color\": \"" + r.getRouteColor() + "\", " +
-                            "\"textColor\": \"" + r.getRouteTextColor() +
+                            "\"textColor\": \"" + r.getRouteTextColor() + "\"" +
                         "}," +
                         "\"trip\": " + trip +
                     "}"
@@ -221,7 +221,7 @@ final class RequestHandler implements SimpleHttpHandler {
                 exchange.send(
                     "{" +
                         "\"vehicle\": {" +
-                            "\"id\": " + subway.getVehicleID() + ", " +
+                            "\"id\": \"" + subway.getVehicleID() + "\", " +
                             "\"express\": " + subway.isExpress() +
                         "}," +
                         "\"route\": {" +
@@ -229,7 +229,7 @@ final class RequestHandler implements SimpleHttpHandler {
                             "\"shortName\": \"" + r.getRouteShortName() + "\", " +
                             "\"description\": \"" + r.getRouteDescription() + "\", " +
                             "\"color\": \"" + r.getRouteColor() + "\", " +
-                            "\"textColor\": \"" + r.getRouteTextColor() +
+                            "\"textColor\": \"" + r.getRouteTextColor() + "\"" +
                         "}," +
                         "\"trip\": " + trip +
                     "}"

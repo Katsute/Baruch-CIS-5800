@@ -2,4 +2,6 @@
 *.iml
 target
 
-*-token.txt
+/*.jar
+/*.zip
+/*-token.txt

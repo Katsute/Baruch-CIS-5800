@@ -42,7 +42,7 @@ CIS 5800 - Information Technology Development and Project Management
 
  1. Write the bus token to a file named `bus-token.txt` in the same directory.
  2. Write the subway token to a file named `subway-token.txt` in the same directory.
- 3. Run the jar file (check the file name) to start the server.
+ 3. Run the jar file to start the server.
 
     ```sh
     java -jar mta-information-site.jar

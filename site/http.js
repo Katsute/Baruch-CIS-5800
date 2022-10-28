@@ -24,7 +24,14 @@ const request = async (method, path, params) => {
         const query = !params ? "" : '?' + Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
 
         xhr.open(method.toUpperCase(), path + query);
-        xhr.onload = () => (xhr.status == 200 ? res : rej)(JSON.parse(xhr.responseText));
+        xhr.onload = () => {
+            try{
+                (xhr.status == 200 ? res : rej)(JSON.parse(xhr.responseText));
+            }catch(error){
+                console.error(`Failed to parse json: \n${xhr.responseText}`);
+                rej(error);
+            }
+        };
         xhr.onerror = () => rej({status: xhr.status, text: xhr.statusText});
         xhr.send();
     });
