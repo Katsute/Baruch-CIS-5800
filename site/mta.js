@@ -23,10 +23,20 @@
 const LAT = 40.74058128194693;
 const LON = -73.98325077286562;
 
-const getBusByCoord = async (route, lat, lon) => {
+const __testMTA = async () => {
+    const bus = await getBusByCoord("M1", 0, LAT, LON);
+    const subway = await getSubwayByCoord(6, 0, LAT, LON);
+    console.log(bus);
+    console.log(await getBusByID(bus.vehicle.id));
+    console.log(subway);
+    console.log(await getSubwayByID(subway.vehicle.id));
+}
+
+const getBusByCoord = async (route, dir, lat, lon) => {
     return await get("/request", {
         "type": "bus",
         "route": route,
+        "direction": dir,
         "latitude": lat,
         "longitude": lon
     });
@@ -39,16 +49,17 @@ const getBusByID = async (id) => {
     });
 }
 
-const getSubwayByCoord = async (route, lat, lon) => {
+const getSubwayByCoord = async (route, dir, lat, lon) => {
     return await get("/request", {
         "type": "subway",
         "route": route,
+        "direction": dir,
         "latitude": lat,
         "longitude": lon
     });
 }
 
-const getSubwayByID = async (id, lat, lon) => {
+const getSubwayByID = async (id) => {
     return await get("/request", {
         "type": "subway",
         "id": id

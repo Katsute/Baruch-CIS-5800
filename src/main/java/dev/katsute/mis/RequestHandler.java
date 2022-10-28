@@ -20,7 +20,9 @@ package dev.katsute.mis;
 
 import dev.katsute.onemta.MTA;
 import dev.katsute.onemta.bus.Bus;
+import dev.katsute.onemta.bus.BusDirection;
 import dev.katsute.onemta.subway.Subway;
+import dev.katsute.onemta.subway.SubwayDirection;
 import dev.katsute.simplehttpserver.SimpleHttpExchange;
 import dev.katsute.simplehttpserver.SimpleHttpHandler;
 
@@ -43,6 +45,7 @@ final class RequestHandler implements SimpleHttpHandler {
     @Override
     public final void handle(final SimpleHttpExchange exchange){
         try{
+            System.out.println(exchange.getRequestMethod().toUpperCase() + " : " + exchange.getGetMap());
             // enforce GET
             if(!exchange.getRequestMethod().equalsIgnoreCase("GET")){
                 exchange.send(String.format("{\n    \"error\": \"Method not allowed '%s'\"\n}", exchange.getRequestMethod().toUpperCase()), HttpURLConnection.HTTP_BAD_METHOD);
@@ -63,18 +66,16 @@ final class RequestHandler implements SimpleHttpHandler {
                 }
             }
 
+            final String id = query.get("id");
             final String route = query.get("route");
-            {
+
+            final Double lat, lon;
+            Integer direction = null;
+            if(id == null){
                 if(route == null){
                     exchange.send("{\n    \"error\": \"Missing route\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
-            }
-
-            final String id = query.get("id");
-
-            final Double lat, lon;
-            if(id == null){
                 if(!query.containsKey("latitude")){
                     exchange.send("{\n    \"error\": \"Missing latitude\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
@@ -83,7 +84,17 @@ final class RequestHandler implements SimpleHttpHandler {
                     exchange.send("{\n    \"error\": \"Missing longitude\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
+                if(!query.containsKey("direction")){
+                    exchange.send("{\n    \"error\": \"Missing direction\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
+                    return;
+                }
 
+                try{
+                    direction = Integer.parseInt(query.get("direction"));
+                }catch(final NumberFormatException ignored){
+                    exchange.send(String.format("{\n    \"error\": \"Unknown direction '%s'\"\n}", query.get("direction")), HttpURLConnection.HTTP_BAD_REQUEST);
+                    return;
+                }
                 try{
                     lat = Double.parseDouble(query.get("latitude"));
                 }catch(final NumberFormatException ignored){
@@ -112,7 +123,11 @@ final class RequestHandler implements SimpleHttpHandler {
 
                     Bus.Vehicle buf = null;
                     Double min = null;
+
+                    final BusDirection dir = BusDirection.asDirection(direction);
                     for(final Bus.Vehicle vehicle : r.getVehicles()){
+                        if(!vehicle.getDirection().equals(dir))
+                            continue;
                         double dist = distance(lon, lat, vehicle.getLongitude(), vehicle.getLatitude());
                         if(min == null || dist < min){
                             min = dist;
@@ -156,7 +171,8 @@ final class RequestHandler implements SimpleHttpHandler {
                             "\"express\": " + bus.isExpress() + ", " +
                             "\"limited\": " + bus.isLimited() + ", " +
                             "\"select\": " + bus.isSelectBusService() + ", " +
-                            "\"shuttle\": " + bus.isShuttle() +
+                            "\"shuttle\": " + bus.isShuttle() + ", " +
+                            "\"direction\": \"" + bus.getDirection().name() + "\"" +
                         "}," +
                         "\"route\": {" +
                             "\"name\": \"" + r.getRouteName() + "\", " +
@@ -181,7 +197,11 @@ final class RequestHandler implements SimpleHttpHandler {
 
                     Subway.Vehicle buf = null;
                     Double min = null;
+
+                    final SubwayDirection dir = SubwayDirection.asDirection(direction);
                     for(final Subway.Vehicle vehicle : r.getVehicles()){
+                        if(vehicle.getTrip().getDirection().equals(dir))
+                            continue;
                         double dist = distance(lon, lat, vehicle.getStop().getLongitude(), vehicle.getStop().getLatitude());
                         if(min == null || dist < min){
                             min = dist;
@@ -222,7 +242,8 @@ final class RequestHandler implements SimpleHttpHandler {
                     "{" +
                         "\"vehicle\": {" +
                             "\"id\": \"" + subway.getVehicleID() + "\", " +
-                            "\"express\": " + subway.isExpress() +
+                            "\"express\": " + subway.isExpress() + ", " +
+                            "\"direction\": \"" + subway.getTrip().getDirection().name() + "\"" +
                         "}," +
                         "\"route\": {" +
                             "\"name\": \"" + r.getRouteName() + "\", " +

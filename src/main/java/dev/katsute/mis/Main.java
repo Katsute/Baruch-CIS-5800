@@ -35,6 +35,7 @@ final class Main {
     private static MTA mta;
 
     public static void main(String[] args) throws Throwable {
+        System.out.println("Checking tokens");
         // read tokens
         String busToken, subwayToken;
         {
@@ -49,6 +50,7 @@ final class Main {
             subwayToken = String.join("\n", Files.readAllLines(bt.toPath())).trim();
             if(subwayToken.isEmpty())  throw new NullPointerException("Subway token is missing from 'subway-token.txt'");
         }
+        System.out.println("Initializing MTA");
         // initialize MTA
         mta = MTA.create(
             busToken,
@@ -61,6 +63,7 @@ final class Main {
             DataResource.create(DataResourceType.Bus_Company, new File("google_transit_bus_company.zip")),
             DataResource.create(DataResourceType.Subway, new File("google_transit_subway.zip"))
         );
+        System.out.println("Initializing server");
         // initialize server
         {
             server = SimpleHttpServer.create(8080);
@@ -77,6 +80,8 @@ final class Main {
             server.createContext("/request", new RequestHandler(mta));
 
             server.start();
+
+            System.out.println("Server started at localhost:8080");
         }
     }
 
