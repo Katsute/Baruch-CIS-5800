@@ -18,6 +18,12 @@
 
 "use strict";
 
+/**
+ * @param {*} method method
+ * @param {*} path path
+ * @param {*} params object params
+ * @returns object response
+ */
 const request = async (method, path, params) => {
     return new Promise((res, rej) => {
         const xhr = new XMLHttpRequest();
@@ -37,4 +43,9 @@ const request = async (method, path, params) => {
     });
 }
 
+/**
+ * @param {*} path path
+ * @param {*} params object params
+ * @returns object response
+ */
 const get = async (path, params) => await request("GET", path, params);

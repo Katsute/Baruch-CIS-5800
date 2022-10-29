@@ -32,6 +32,13 @@ const __testMTA = async () => {
     console.log(await getSubwayByID(subway.vehicle.id));
 }
 
+/**
+ * @param {*} route route code
+ * @param {*} dir direction 0 | 1
+ * @param {*} lat latitude
+ * @param {*} lon longitude
+ * @returns bus
+ */
 const getBusByCoord = async (route, dir, lat, lon) => {
     return await get("/request", {
         "type": "bus",
@@ -42,6 +49,10 @@ const getBusByCoord = async (route, dir, lat, lon) => {
     });
 }
 
+/**
+ * @param {*} id vehicle id
+ * @returns bus
+ */
 const getBusByID = async (id) => {
     return await get("/request", {
         "type": "bus",
@@ -49,6 +60,13 @@ const getBusByID = async (id) => {
     });
 }
 
+/**
+ * @param {*} route route code
+ * @param {*} dir direction 0 | 1
+ * @param {*} lat latitude
+ * @param {*} lon longitude
+ * @returns bus
+ */
 const getSubwayByCoord = async (route, dir, lat, lon) => {
     return await get("/request", {
         "type": "subway",
@@ -59,6 +77,10 @@ const getSubwayByCoord = async (route, dir, lat, lon) => {
     });
 }
 
+/**
+ * @param {*} id vehicle id
+ * @returns bus
+ */
 const getSubwayByID = async (id) => {
     return await get("/request", {
         "type": "subway",

@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy (Java 8)
+    name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
