@@ -28,7 +28,7 @@ import dev.katsute.simplehttpserver.SimpleHttpHandler;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 final class RequestHandler implements SimpleHttpHandler {
@@ -48,7 +48,7 @@ final class RequestHandler implements SimpleHttpHandler {
             System.out.println(exchange.getRequestMethod().toUpperCase() + " : " + exchange.getGetMap());
             // enforce GET
             if(!exchange.getRequestMethod().equalsIgnoreCase("GET")){
-                exchange.send(String.format("{\n    \"error\": \"Method not allowed '%s'\"\n}", exchange.getRequestMethod().toUpperCase()), HttpURLConnection.HTTP_BAD_METHOD);
+                exchange.send(JsonBuilder.singleton("error", "Method not allowed '" + exchange.getRequestMethod().toUpperCase() + "'"), HttpURLConnection.HTTP_BAD_METHOD);
                 return;
             }
 
@@ -58,10 +58,7 @@ final class RequestHandler implements SimpleHttpHandler {
             final String type = query.get("type");
             {
                 if(!"bus".equalsIgnoreCase(type) && !"subway".equalsIgnoreCase(type)){
-                    if(type == null)
-                        exchange.send("{\n    \"error\": \"Missing type\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
-                    else
-                        exchange.send(String.format("{\n    \"error\": \"Unknown type '%s'\"\n}", type), HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", type == null ? "Missing type" : ("Unknown type '" + type + "'")), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
             }
@@ -70,45 +67,47 @@ final class RequestHandler implements SimpleHttpHandler {
             final String route = query.get("route");
 
             final Double lat, lon;
-            Integer direction = null;
+            final Integer direction;
             if(id == null){
                 if(route == null){
-                    exchange.send("{\n    \"error\": \"Missing route\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Missing route"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
                 if(!query.containsKey("latitude")){
-                    exchange.send("{\n    \"error\": \"Missing latitude\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Missing latitude"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
                 if(!query.containsKey("longitude")){
-                    exchange.send("{\n    \"error\": \"Missing longitude\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Missing longitude"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
                 if(!query.containsKey("direction")){
-                    exchange.send("{\n    \"error\": \"Missing direction\"\n}", HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Missing direction"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
 
                 try{
                     direction = Integer.parseInt(query.get("direction"));
                 }catch(final NumberFormatException ignored){
-                    exchange.send(String.format("{\n    \"error\": \"Unknown direction '%s'\"\n}", query.get("direction")), HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Unknown direction '" + query.get("direction") + "'"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
                 try{
                     lat = Double.parseDouble(query.get("latitude"));
                 }catch(final NumberFormatException ignored){
-                    exchange.send(String.format("{\n    \"error\": \"Unknown latitude '%s'\"\n}", query.get("latitude")), HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Unknown latitude '" + query.get("latitude") + "'"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
                 try{
                     lon = Double.parseDouble(query.get("longitude"));
                 }catch(final NumberFormatException ignored){
-                    exchange.send(String.format("{\n    \"error\": \"Unknown longitude '%s'\"\n}", query.get("longitude")), HttpURLConnection.HTTP_BAD_REQUEST);
+                    exchange.send(JsonBuilder.singleton("error", "Unknown longitude '" + query.get("longitude") + "'"), HttpURLConnection.HTTP_BAD_REQUEST);
                     return;
                 }
-            }else
+            }else{
                 lat = lon = null;
+                direction = null;
+            }
 
             if(type.equalsIgnoreCase("bus")){
                 final Bus.Vehicle bus;
@@ -117,7 +116,7 @@ final class RequestHandler implements SimpleHttpHandler {
                     try{
                         r = mta.getBusRoute(route);
                     }catch(final NullPointerException ignored){
-                        exchange.send(String.format("{\n    \"error\": \"Failed to find route '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        exchange.send(JsonBuilder.singleton("error", "Failed to find route '" + route + '"'), HttpURLConnection.HTTP_NOT_FOUND);
                         return;
                     }
 
@@ -139,51 +138,50 @@ final class RequestHandler implements SimpleHttpHandler {
                     try{
                         bus = mta.getBus(Integer.parseInt(id));
                     }catch(final NumberFormatException ignored){
-                        exchange.send(String.format("{\n    \"error\": \"Failed to find bus '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        exchange.send(JsonBuilder.singleton("error", "Failed to find bus '" + id + '"'), HttpURLConnection.HTTP_NOT_FOUND);
                         return;
                     }
 
                 if(bus == null){
-                    exchange.send("{\n    \"error\": \"Failed to find bus\"\n}", HttpURLConnection.HTTP_NOT_FOUND);
+                    exchange.send(JsonBuilder.singleton("error", "Failed to find bus '" + id + '"'), HttpURLConnection.HTTP_NOT_FOUND);
                     return;
                 }
 
                 final Bus.Route r = bus.getRoute();
                 final Bus.Trip t = bus.getTrip();
 
-                final StringBuilder trip = new StringBuilder();
-                trip.append("[");
-                if(t != null){
-                    Bus.TripStop[] tripStops = t.getTripStops();
-                    for(int i = 0; i < tripStops.length; i++){
-                        final Bus.TripStop ts = tripStops[i];
-                        trip.append('"').append(ts.getStopName()).append('"');
-                        if(i < tripStops.length - 1)
-                            trip.append(", ");
-                    }
+                final List<JsonBuilder> stops = new ArrayList<>();
+                for(final Bus.TripStop stop : t.getTripStops()){
+                    final Bus.Stop s = stop.getStop();
+                    stops.add(new JsonBuilder()
+                        .set("id", stop.getStopID())
+                        .set("name", stop.getStopName())
+                        .set("latitude", s.getLatitude())
+                        .set("longitude", s.getLongitude())
+                    );
                 }
-                trip.append("]");
 
-                exchange.send(
-                    "{" +
-                        "\"vehicle\": {" +
-                            "\"id\": " + bus.getVehicleID() + ", " +
-                            "\"express\": " + bus.isExpress() + ", " +
-                            "\"limited\": " + bus.isLimited() + ", " +
-                            "\"select\": " + bus.isSelectBusService() + ", " +
-                            "\"shuttle\": " + bus.isShuttle() + ", " +
-                            "\"direction\": \"" + bus.getDirection().name() + "\"" +
-                        "}," +
-                        "\"route\": {" +
-                            "\"name\": \"" + r.getRouteName() + "\", " +
-                            "\"shortName\": \"" + r.getRouteShortName() + "\", " +
-                            "\"description\": \"" + r.getRouteDescription() + "\", " +
-                            "\"color\": \"" + r.getRouteColor() + "\", " +
-                            "\"textColor\": \"" + r.getRouteTextColor() + "\"" +
-                        "}," +
-                        "\"trip\": " + trip +
-                    "}"
-                );
+                final JsonBuilder json = new JsonBuilder()
+                    .set("vehicle", new JsonBuilder()
+                        .set("id", bus.getVehicleID())
+                        .set("express", bus.isExpress())
+                        .set("limited", bus.isLimited())
+                        .set("select+", bus.isSelectBusService())
+                        .set("direction", bus.getDirection().name())
+                        .set("bearing", bus.getBearing())
+                        .set("latitude", bus.getLatitude())
+                        .set("longitude", bus.getLongitude())
+                    )
+                    .set("route", new JsonBuilder()
+                        .set("name", r.getRouteName())
+                        .set("shortName", r.getRouteShortName())
+                        .set("description", r.getRouteDescription())
+                        .set("color", r.getRouteColor())
+                        .set("textColor", r.getRouteTextColor())
+                    )
+                    .set("trip", stops);
+
+                exchange.send(json.build());
             }else if(type.equalsIgnoreCase("subway")){
                 final Subway.Vehicle subway;
                 if(id == null){
@@ -191,7 +189,7 @@ final class RequestHandler implements SimpleHttpHandler {
                     try{
                         r = mta.getSubwayRoute(route);
                     }catch(final NullPointerException ignored){
-                        exchange.send(String.format("{\n    \"error\": \"Failed to find route '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        exchange.send(JsonBuilder.singleton("error", "Failed to find route '" + route + '"'), HttpURLConnection.HTTP_NOT_FOUND);
                         return;
                     }
 
@@ -213,55 +211,52 @@ final class RequestHandler implements SimpleHttpHandler {
                     try{
                         subway = mta.getSubwayTrain(id);
                     }catch(final NumberFormatException ignored){
-                        exchange.send(String.format("{\n    \"error\": \"Failed to find bus '%s'\"\n}", route), HttpURLConnection.HTTP_NOT_FOUND);
+                        exchange.send(JsonBuilder.singleton("error", "Failed to find subway '" + id + '"'), HttpURLConnection.HTTP_NOT_FOUND);
                         return;
                     }
 
                 if(subway == null){
-                    exchange.send("{\n    \"error\": \"Failed to find subway\"\n}", HttpURLConnection.HTTP_NOT_FOUND);
+                    exchange.send(JsonBuilder.singleton("error", "Failed to find subway '" + id + '"'), HttpURLConnection.HTTP_NOT_FOUND);
                     return;
                 }
 
                 final Subway.Route r = subway.getRoute();
                 final Subway.Trip t = subway.getTrip();
 
-                final StringBuilder trip = new StringBuilder();
-                trip.append("[");
-                if(t != null){
-                    Subway.TripStop[] tripStops = t.getTripStops();
-                    for(int i = 0; i < tripStops.length; i++){
-                        final Subway.TripStop ts = tripStops[i];
-                        trip.append('"').append(ts.getStop().getStopName()).append('"');
-                        if(i < tripStops.length - 1)
-                            trip.append(", ");
-                    }
+                final List<JsonBuilder> stops = new ArrayList<>();
+                for(final Subway.TripStop stop : t.getTripStops()){
+                    final Subway.Stop s = stop.getStop();
+                    stops.add(new JsonBuilder()
+                        .set("id", stop.getStopID())
+                        .set("name", s.getStopName())
+                        .set("latitude", s.getLatitude())
+                        .set("longitude", s.getLongitude())
+                    );
                 }
-                trip.append("]");
 
-                exchange.send(
-                    "{" +
-                        "\"vehicle\": {" +
-                            "\"id\": \"" + subway.getVehicleID() + "\", " +
-                            "\"express\": " + subway.isExpress() + ", " +
-                            "\"direction\": \"" + subway.getTrip().getDirection().name() + "\"" +
-                        "}," +
-                        "\"route\": {" +
-                            "\"name\": \"" + r.getRouteName() + "\", " +
-                            "\"shortName\": \"" + r.getRouteShortName() + "\", " +
-                            "\"description\": \"" + r.getRouteDescription() + "\", " +
-                            "\"color\": \"" + r.getRouteColor() + "\", " +
-                            "\"textColor\": \"" + r.getRouteTextColor() + "\"" +
-                        "}," +
-                        "\"trip\": " + trip +
-                    "}"
-                );
+                final JsonBuilder json = new JsonBuilder()
+                    .set("vehicle", new JsonBuilder()
+                        .set("id", subway.getVehicleID())
+                        .set("express", subway.isExpress())
+                        .set("direction", t.getDirection().name())
+                    )
+                    .set("route", new JsonBuilder()
+                        .set("name", r.getRouteName())
+                        .set("shortName", r.getRouteShortName())
+                        .set("description", r.getRouteDescription())
+                        .set("color", r.getRouteColor())
+                        .set("textColor", r.getRouteTextColor())
+                    )
+                    .set("trip", stops);
+
+                exchange.send(json.build());
             }
         }catch(final Throwable e){ // uncaught errors
             final StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             e.printStackTrace();
             try{
-                exchange.send(String.format("{\n    \"error\": \"%s\"\n}", newline.matcher(quote.matcher(sw.toString()).replaceAll("'")).replaceAll("\\n")), HttpURLConnection.HTTP_INTERNAL_ERROR);
+                exchange.send(JsonBuilder.singleton("error", sw.toString()), HttpURLConnection.HTTP_INTERNAL_ERROR);
             }catch(final IOException ignored){}
         }finally{
             exchange.close();

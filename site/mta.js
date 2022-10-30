@@ -33,6 +33,26 @@ const __testMTA = async () => {
 }
 
 /**
+ * @returns [latitude, longitude]
+ */
+const getLocation = async () => new Promise((res, rej) => {
+    if(!navigator.geolocation){
+        console.error("geolocation not supported");
+        rej("geolocation not supported");
+    }else{
+        navigator.geolocation.getCurrentPosition(
+            (success) => {
+                res([success.coords.latitude, success.coords.longitude]);
+            },
+            (err) => {
+                console.error(err);
+                rej(err);
+            }
+        );
+    }
+});
+
+/**
  * @param {*} route route code
  * @param {*} dir direction 0 | 1
  * @param {*} lat latitude
@@ -85,5 +105,29 @@ const getSubwayByID = async (id) => {
     return await get("/request", {
         "type": "subway",
         "id": id
+    });
+}
+
+/**
+ * @param {*} path path
+ * @param {*} params object params
+ * @returns object response
+ */
+const get = async (path, params) => {
+    return new Promise((res, rej) => {
+        const xhr = new XMLHttpRequest();
+        const query = !params ? "" : '?' + Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
+
+        xhr.open("GET", path + query);
+        xhr.onload = () => {
+            try{
+                (xhr.status == 200 ? res : rej)(JSON.parse(xhr.responseText));
+            }catch(error){
+                console.error(`Failed to parse json: \n${xhr.responseText}`);
+                rej(error);
+            }
+        };
+        xhr.onerror = () => rej({status: xhr.status, text: xhr.statusText});
+        xhr.send();
     });
 }
