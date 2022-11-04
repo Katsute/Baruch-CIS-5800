@@ -23,6 +23,7 @@ import dev.katsute.onemta.bus.Bus;
 import dev.katsute.onemta.bus.BusDirection;
 import dev.katsute.onemta.subway.Subway;
 import dev.katsute.onemta.subway.SubwayDirection;
+import dev.katsute.onemta.types.TransitAlertPeriod;
 import dev.katsute.simplehttpserver.SimpleHttpExchange;
 import dev.katsute.simplehttpserver.SimpleHttpHandler;
 
@@ -109,6 +110,8 @@ final class RequestHandler implements SimpleHttpHandler {
                 direction = null;
             }
 
+            final long NOW = System.currentTimeMillis();
+
             if(type.equalsIgnoreCase("bus")){
                 final Bus.Vehicle bus;
                 if(id == null){
@@ -153,12 +156,47 @@ final class RequestHandler implements SimpleHttpHandler {
                 final List<JsonBuilder> stops = new ArrayList<>();
                 for(final Bus.TripStop stop : t.getTripStops()){
                     final Bus.Stop s = stop.getStop();
+                    final Bus.Alert[] alerts = s.getAlerts();
+
+                    final List<JsonBuilder> a = new ArrayList<>();
+                    OUTER:
+                    for(final Bus.Alert alert : alerts){
+                        for(final TransitAlertPeriod per : alert.getActivePeriods()){
+                            if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                                a.add(new JsonBuilder()
+                                    .set("header", alert.getHeader())
+                                    .set("description", alert.getDescription())
+                                    .set("type", alert.getAlertType())
+                                    .set("effect", alert.getEffect())
+                                );
+                                break OUTER;
+                            }
+                        }
+                    }
+
                     stops.add(new JsonBuilder()
-                        .set("id", stop.getStopID())
-                        .set("name", stop.getStopName())
+                        .set("id", s.getStopID())
+                        .set("name", s.getStopName())
                         .set("latitude", s.getLatitude())
                         .set("longitude", s.getLongitude())
+                        .set("alerts", a)
                     );
+                }
+
+                final List<JsonBuilder> a = new ArrayList<>();
+                OUTER:
+                for(final Bus.Alert alert : r.getAlerts()){
+                    for(final TransitAlertPeriod per : alert.getActivePeriods()){
+                        if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                            a.add(new JsonBuilder()
+                                .set("header", alert.getHeader())
+                                .set("description", alert.getDescription())
+                                .set("type", alert.getAlertType())
+                                .set("effect", alert.getEffect())
+                            );
+                            break OUTER;
+                        }
+                    }
                 }
 
                 final JsonBuilder json = new JsonBuilder()
@@ -179,7 +217,8 @@ final class RequestHandler implements SimpleHttpHandler {
                         .set("color", r.getRouteColor())
                         .set("textColor", r.getRouteTextColor())
                     )
-                    .set("trip", stops);
+                    .set("trip", stops)
+                    .set("alerts", a);
 
                 exchange.send(json.build());
             }else if(type.equalsIgnoreCase("subway")){
@@ -226,12 +265,47 @@ final class RequestHandler implements SimpleHttpHandler {
                 final List<JsonBuilder> stops = new ArrayList<>();
                 for(final Subway.TripStop stop : t.getTripStops()){
                     final Subway.Stop s = stop.getStop();
+                    final Subway.Alert[] alerts = s.getAlerts();
+
+                    final List<JsonBuilder> a = new ArrayList<>();
+                    OUTER:
+                    for(final Subway.Alert alert : alerts){
+                        for(final TransitAlertPeriod per : alert.getActivePeriods()){
+                            if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                                a.add(new JsonBuilder()
+                                    .set("header", alert.getHeader())
+                                    .set("description", alert.getDescription())
+                                    .set("type", alert.getAlertType())
+                                    .set("effect", alert.getEffect())
+                                );
+                                break OUTER;
+                            }
+                        }
+                    }
+
                     stops.add(new JsonBuilder()
-                        .set("id", stop.getStopID())
+                        .set("id", s.getStopID())
                         .set("name", s.getStopName())
                         .set("latitude", s.getLatitude())
                         .set("longitude", s.getLongitude())
+                        .set("alerts", a)
                     );
+                }
+
+                final List<JsonBuilder> a = new ArrayList<>();
+                OUTER:
+                for(final Subway.Alert alert : r.getAlerts()){
+                    for(final TransitAlertPeriod per : alert.getActivePeriods()){
+                        if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                            a.add(new JsonBuilder()
+                                .set("header", alert.getHeader())
+                                .set("description", alert.getDescription())
+                                .set("type", alert.getAlertType())
+                                .set("effect", alert.getEffect())
+                            );
+                            break OUTER;
+                        }
+                    }
                 }
 
                 final JsonBuilder json = new JsonBuilder()
@@ -247,7 +321,8 @@ final class RequestHandler implements SimpleHttpHandler {
                         .set("color", r.getRouteColor())
                         .set("textColor", r.getRouteTextColor())
                     )
-                    .set("trip", stops);
+                    .set("trip", stops)
+                    .set("alerts", a);
 
                 exchange.send(json.build());
             }
@@ -280,5 +355,7 @@ final class RequestHandler implements SimpleHttpHandler {
             )
         );
     }
+
+    private static final int TODAY = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
 
 }
