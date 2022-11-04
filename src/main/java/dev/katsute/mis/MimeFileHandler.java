@@ -19,6 +19,7 @@
 package dev.katsute.mis;
 
 import dev.katsute.simplehttpserver.SimpleHttpExchange;
+import dev.katsute.simplehttpserver.handler.file.FileAdapter;
 import dev.katsute.simplehttpserver.handler.file.FileHandler;
 
 import java.io.File;
@@ -26,6 +27,18 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 final class MimeFileHandler extends FileHandler {
+
+    private static final FileAdapter adapter = new FileAdapter(){
+        @Override
+        public final String getName(final File file){
+            final String name = file.getName();
+            return name.endsWith(".html") ? name.substring(0, name.length() - 5) : name;
+        }
+    };
+
+    public MimeFileHandler(){
+        super(adapter);
+    }
 
     @Override
     public final void handle(final SimpleHttpExchange exchange, final File source, final byte[] bytes) throws IOException {

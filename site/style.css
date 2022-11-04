@@ -1,0 +1,20 @@
+* {
+
+    font-family: Helvetica, Arial, sans-serif, "Segoe UI Emoji";
+
+    outline: none;
+    scroll-behavior: smooth;
+
+}
+
+img {
+
+    max-width: 100%;
+
+}
+
+a:visited {
+
+    color: blue;
+
+}

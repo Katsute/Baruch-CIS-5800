@@ -54,7 +54,8 @@ CIS 5800 - Information Technology Development and Project Management
 
 This project is released under the [GNU General Public License (GPL) v2.0](https://github.com/Katsute/Baruch-CIS-5800/blob/main/LICENSE).
 
-### ⚠️ Disclaimer
+This project is for educational purposes only.
 
- - [@Katsute](https://github.com/Katsute) is not affiliated with the MTA.
- - By using the MTA API you are subject to their [Terms and Conditions](https://api.mta.info/#/DataFeedAgreement).
+Names, logos, subway symbols are owned by the MTA "Metropolitan Transit Authority", covered under "fair use".
+
+Copyright Disclaimer under section 107 of the Copyright Act of 1976; Allowance is made for "Fair Use" for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of fair use.

@@ -38,7 +38,7 @@ final class JsonBuilder {
     }
 
     public final JsonBuilder set(final String key, final String object){
-        return append(key, '"' + sanitize(object) + '"');
+        return append(key, object == null ? null : '"' + sanitize(object) + '"');
     }
 
     public final JsonBuilder set(final String key, final JsonBuilder obj){
@@ -65,7 +65,10 @@ final class JsonBuilder {
     }
 
     private String sanitize(final String raw){
-        return raw.replace("\t", "\\t").replace("\n", "\\n");
+        return raw
+            .replace("\t", "\\t")
+            .replace("\n", "\\n")
+            .replace("\"", "\\\"");
     }
 
     public final String build(){
