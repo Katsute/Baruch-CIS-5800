@@ -42,13 +42,17 @@ CIS 5800 - Information Technology Development and Project Management
 
  1. Write the bus token to a file named `bus-token.txt` in the same directory.
  2. Write the subway token to a file named `subway-token.txt` in the same directory.
- 3. Run the jar file to start the server.
+ 3. Run the jar file from the command line to start the server. **Do not click the jar**, if you click the jar you will have to use task manager to close it.
 
     ```sh
     java -jar mta-information-site.jar
     ```
  4. Open your browser to `localhost:8080` see the live site.
- 5. Add site pages to the `site` folder.
+ 5. Modify site pages in the `site` folder.
+
+Your folder should look like this:
+
+![setup](https://raw.githubusercontent.com/Katsute/Baruch-CIS-5800/main/setup.png)
 
 ### 💼 License
 
@@ -56,6 +60,8 @@ This project is released under the [GNU General Public License (GPL) v2.0](https
 
 This project is for educational purposes only.
 
-Names, logos, subway symbols are owned by the MTA "Metropolitan Transit Authority", covered under "fair use".
+Names, logos, subway symbols are owned by the MTA "Metropolitan Transit Authority" and are covered under "fair use".
 
-Copyright Disclaimer under section 107 of the Copyright Act of 1976; Allowance is made for "Fair Use" for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of fair use.
+Copyright Disclaimer under section 107 of the Copyright Act of 1976; Allowance is made for "Fair Use" for purposes such as criticism, comment, news reporting, teaching, scholarship, and research.
+
+Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of fair use.

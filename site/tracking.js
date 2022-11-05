@@ -1,5 +1,7 @@
 "use strict";
 
+// ⇊ DO NOT EDIT THIS ⇊
+
 const main = document.querySelector("main");
 
 (async () => {
@@ -34,10 +36,18 @@ const main = document.querySelector("main");
     }, 60 * 1000);
 })();
 
+// ⇈ DO NOT EDIT THIS ⇈
+
 const generate = (data) => {
-    console.info(data);
+    console.info(data); // open the console to see vehicle data
 
-    // generate site here
+    let content = "";
 
-    main.innerHTML = JSON.stringify(data); // modify me!
+    // generate the site here ↓
+
+    content += "<b>Hello World!</b><br><br>";
+
+    content += `<b>${data.route.shortName}</b> ${data.route.name}`;
+
+    main.innerHTML = content; // write content onto the page
 }
