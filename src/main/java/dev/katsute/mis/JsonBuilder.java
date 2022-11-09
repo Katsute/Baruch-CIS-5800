@@ -41,8 +41,8 @@ final class JsonBuilder {
         return append(key, object == null ? null : '"' + sanitize(object) + '"');
     }
 
-    public final JsonBuilder set(final String key, final JsonBuilder obj){
-        return append(key, obj.build());
+    public final JsonBuilder set(final String key, final JsonBuilder object){
+        return append(key, object.build());
     }
 
     public final JsonBuilder set(final String key, final String[] strings){
@@ -52,9 +52,9 @@ final class JsonBuilder {
         return append(key, '[' + String.join(", ", buf) + ']');
     }
 
-    public final JsonBuilder set(final String key, final List<JsonBuilder> objs){
+    public final JsonBuilder set(final String key, final List<JsonBuilder> objects){
         final List<String> buf = new ArrayList<>();
-        for(final JsonBuilder obj : objs)
+        for(final JsonBuilder obj : objects)
             buf.add(obj.build());
         return append(key, '[' + String.join(", ", buf) + ']');
     }

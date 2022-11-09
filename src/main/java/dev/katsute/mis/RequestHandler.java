@@ -163,11 +163,18 @@ final class RequestHandler implements SimpleHttpHandler {
                     for(final Bus.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
                             if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                                final String desc = alert.getDescription();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
-                                    .set("description", alert.getDescription())
+                                    .set("description", desc)
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
+                                    .set("slow", desc.contains("slow") || desc.contains("delay"))
+                                    .set("skip", desc.startsWith("no") || desc.contains("skips") || desc.contains("skipped"))
+                                    .set("construction", desc.contains("construction"))
+                                    .set("police", desc.contains("police") || desc.contains("nypd"))
+                                    .set("fire", desc.contains("fire") || desc.contains("fdny"))
+                                    .set("ems", desc.contains("ems"))
                                 );
                                 break OUTER;
                             }
@@ -188,11 +195,18 @@ final class RequestHandler implements SimpleHttpHandler {
                 for(final Bus.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
                         if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                            final String desc = alert.getDescription();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
-                                .set("description", alert.getDescription())
+                                .set("description", desc)
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
+                                .set("slow", desc.contains("slow") || desc.contains("delay"))
+                                .set("skip", desc.startsWith("no") || desc.contains("skips") || desc.contains("skipped"))
+                                .set("construction", desc.contains("construction"))
+                                .set("police", desc.contains("police") || desc.contains("nypd"))
+                                .set("fire", desc.contains("fire") || desc.contains("fdny"))
+                                .set("ems", desc.contains("ems"))
                             );
                             break OUTER;
                         }
@@ -272,11 +286,21 @@ final class RequestHandler implements SimpleHttpHandler {
                     for(final Subway.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
                             if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                                final String desc = alert.getDescription().toLowerCase();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
                                     .set("description", alert.getDescription())
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
+                                    .set("slow", desc.contains("slow") || desc.contains("delay"))
+                                    .set("skip", desc.startsWith("no") || desc.contains("skips") || desc.contains("skipped"))
+                                    .set("local", desc.contains("local"))
+                                    .set("express", desc.contains("express"))
+                                    .set("shuttle", desc.contains("shuttle"))
+                                    .set("construction", desc.contains("construction"))
+                                    .set("police", desc.contains("police") || desc.contains("nypd"))
+                                    .set("fire", desc.contains("fire") || desc.contains("fdny"))
+                                    .set("ems", desc.contains("ems"))
                                 );
                                 break OUTER;
                             }
@@ -297,11 +321,21 @@ final class RequestHandler implements SimpleHttpHandler {
                 for(final Subway.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
                         if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                            final String desc = alert.getDescription().toLowerCase();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
                                 .set("description", alert.getDescription())
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
+                                .set("slow", desc.contains("slow") || desc.contains("delay"))
+                                .set("skip", desc.startsWith("no") || desc.contains("skips") || desc.contains("skipped"))
+                                .set("local", desc.contains("local"))
+                                .set("express", desc.contains("express"))
+                                .set("shuttle", desc.contains("shuttle"))
+                                .set("construction", desc.contains("construction"))
+                                .set("police", desc.contains("police") || desc.contains("nypd"))
+                                .set("fire", desc.contains("fire") || desc.contains("fdny"))
+                                .set("ems", desc.contains("ems"))
                             );
                             break OUTER;
                         }
@@ -355,7 +389,5 @@ final class RequestHandler implements SimpleHttpHandler {
             )
         );
     }
-
-    private static final int TODAY = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
 
 }

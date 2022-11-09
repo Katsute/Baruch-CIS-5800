@@ -30,10 +30,6 @@ import java.util.concurrent.Executors;
 
 final class Main {
 
-    private static SimpleHttpServer server = null;
-
-    private static MTA mta;
-
     public static void main(String[] args) throws Throwable {
         System.out.println("Checking tokens");
         // read tokens
@@ -52,7 +48,7 @@ final class Main {
         }
         System.out.println("Initializing MTA");
         // initialize MTA
-        mta = MTA.create(
+        final MTA mta = MTA.create(
             busToken,
             subwayToken,
             DataResource.create(DataResourceType.Bus_Bronx, new File("google_transit_bronx.zip")),
@@ -66,7 +62,7 @@ final class Main {
         System.out.println("Initializing server");
         // initialize server
         {
-            server = SimpleHttpServer.create(8080);
+            final SimpleHttpServer server = SimpleHttpServer.create(8080);
             server.setExecutor(Executors.newCachedThreadPool());
 
             final FileHandler handler = new MimeFileHandler();
