@@ -30,12 +30,8 @@ import dev.katsute.simplehttpserver.SimpleHttpHandler;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.*;
-import java.util.regex.Pattern;
 
 final class RequestHandler implements SimpleHttpHandler {
-
-    private static final Pattern newline = Pattern.compile("\\n\\r?");
-    private static final Pattern quote = Pattern.compile("\"");
 
     private final MTA mta;
 
@@ -172,6 +168,7 @@ final class RequestHandler implements SimpleHttpHandler {
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
                                     .set("skip", desc.startsWith("no") || desc.contains("skips") || desc.contains("skipped"))
                                     .set("construction", desc.contains("construction"))
+                                    .set("weather", desc.contains("weather"))
                                     .set("police", desc.contains("police") || desc.contains("nypd"))
                                     .set("fire", desc.contains("fire") || desc.contains("fdny"))
                                     .set("ems", desc.contains("ems"))
@@ -204,6 +201,7 @@ final class RequestHandler implements SimpleHttpHandler {
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
                                 .set("skip", desc.startsWith("no") || desc.contains("skips") || desc.contains("skipped"))
                                 .set("construction", desc.contains("construction"))
+                                .set("weather", desc.contains("weather"))
                                 .set("police", desc.contains("police") || desc.contains("nypd"))
                                 .set("fire", desc.contains("fire") || desc.contains("fdny"))
                                 .set("ems", desc.contains("ems"))
@@ -298,6 +296,7 @@ final class RequestHandler implements SimpleHttpHandler {
                                     .set("express", desc.contains("express"))
                                     .set("shuttle", desc.contains("shuttle"))
                                     .set("construction", desc.contains("construction"))
+                                    .set("weather", desc.contains("weather"))
                                     .set("police", desc.contains("police") || desc.contains("nypd"))
                                     .set("fire", desc.contains("fire") || desc.contains("fdny"))
                                     .set("ems", desc.contains("ems"))
@@ -333,6 +332,7 @@ final class RequestHandler implements SimpleHttpHandler {
                                 .set("express", desc.contains("express"))
                                 .set("shuttle", desc.contains("shuttle"))
                                 .set("construction", desc.contains("construction"))
+                                .set("weather", desc.contains("weather"))
                                 .set("police", desc.contains("police") || desc.contains("nypd"))
                                 .set("fire", desc.contains("fire") || desc.contains("fdny"))
                                 .set("ems", desc.contains("ems"))
