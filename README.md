@@ -17,7 +17,13 @@ CIS 5800 - Information Technology Development and Project Management
 
  1. Download `site.zip` and `mta-information-site.jar` from the latest [release](https://github.com/Katsute/Baruch-CIS-5800/releases).
 
- 2. Download the following static data feeds from <http://web.mta.info/developers/developer-data-terms.html#data>.
+ 2. ```
+    ⚠️ If you are using v2 or higher you can skip the below step.
+
+    This program now automatically downloads static data from the MTA.
+    ```
+
+    Download the following static data feeds from <http://web.mta.info/developers/developer-data-terms.html#data>.
 
     - **New York City Transit Subway**
     - New York City Transit Bus

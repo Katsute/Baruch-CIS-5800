@@ -23,14 +23,46 @@ import dev.katsute.simplehttpserver.SimpleHttpServer;
 import dev.katsute.simplehttpserver.handler.file.FileHandler;
 import dev.katsute.simplehttpserver.handler.file.FileOptions;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 final class Main {
 
+    private static final Map<String,String> resources = new HashMap<String,String>(){{
+        put("google_transit_subway"         , "http://web.mta.info/developers/data/nyct/subway/google_transit.zip");
+        put("google_transit_bronx"         , "http://web.mta.info/developers/data/nyct/bus/google_transit_bronx.zip");
+        put("google_transit_brooklyn"       , "http://web.mta.info/developers/data/nyct/bus/google_transit_brooklyn.zip");
+        put("google_transit_manhattan"      , "http://web.mta.info/developers/data/nyct/bus/google_transit_manhattan.zip");
+        put("google_transit_queens"         , "http://web.mta.info/developers/data/nyct/bus/google_transit_queens.zip");
+        put("google_transit_staten_island"  , "http://web.mta.info/developers/data/nyct/bus/google_transit_staten_island.zip");
+        put("google_transit_lirr"           , "http://web.mta.info/developers/data/lirr/google_transit.zip");
+        put("google_transit_mnr"            , "http://web.mta.info/developers/data/mnr/google_transit.zip");
+        put("google_transit_bus_company"    , "http://web.mta.info/developers/data/busco/google_transit.zip");
+    }};
+
     public static void main(String[] args) throws Throwable {
+        System.out.println("Checking static data");
+        {
+            for(final Map.Entry<String,String> entry : resources.entrySet())
+                try(final BufferedInputStream IN = new BufferedInputStream(new URL(entry.getValue()).openStream())){
+                    final File file = new File(entry.getKey() + ".zip");
+                    System.out.println("Checking for data resource " + file.getName());
+                    if(!file.exists()){
+                        System.out.println("" + file.getName() + " not found, downloading from the MTA ...");
+                        try(final FileOutputStream OUT = new FileOutputStream(file)){
+                            byte[] buffer = new byte[1024];
+                            int bytesReads;
+                            while((bytesReads = IN.read(buffer, 0, 1024)) != -1)
+                                OUT.write(buffer, 0, bytesReads);
+                        }
+                    }
+                    System.out.println("Added " + file.getName() + " as " + entry.getKey());
+                }
+        }
         System.out.println("Checking tokens");
         // read tokens
         String busToken, subwayToken;
