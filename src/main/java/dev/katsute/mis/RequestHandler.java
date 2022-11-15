@@ -169,8 +169,9 @@ final class RequestHandler implements SimpleHttpHandler {
                                 final String desc = alert.getDescription();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
+                                    .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
                                     .set("description", alert.getDescription().trim())
-                                    .set("translated", translate(alert.getDescription().trim(), "en", lang))
+                                    .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -203,8 +204,9 @@ final class RequestHandler implements SimpleHttpHandler {
                             final String desc = alert.getDescription();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
+                                .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
                                 .set("description", alert.getDescription().trim())
-                                .set("translated", translate(alert.getDescription().trim(), "en", lang))
+                                .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -296,8 +298,9 @@ final class RequestHandler implements SimpleHttpHandler {
                                 final String desc = alert.getDescription().toLowerCase();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
+                                    .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
                                     .set("description", alert.getDescription().trim())
-                                    .set("translated", translate(alert.getDescription().trim(), "en", lang))
+                                    .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -333,8 +336,9 @@ final class RequestHandler implements SimpleHttpHandler {
                             final String desc = alert.getDescription().toLowerCase();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
+                                .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
                                 .set("description", alert.getDescription().trim())
-                                .set("translated", translate(alert.getDescription().trim(), "en", lang))
+                                .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -409,11 +413,11 @@ final class RequestHandler implements SimpleHttpHandler {
 
         final Map<String,String> query = new HashMap<String,String>(){{
             put("client", "at");
-            put("dt", "t"); // sentences
+            put("dt", "t"); // translation
             put("dj", "1"); // as json
-            put("sl", from);
-            put("tl", to);
-            put("q", q);
+            put("sl", from); // source
+            put("tl", to); // target
+            put("q", q.replace("@", "at")); // query
         }};
 
         HttpURLConnection conn = null;
@@ -447,8 +451,10 @@ final class RequestHandler implements SimpleHttpHandler {
 
                 final Matcher m = trans.matcher(OUT.toString());
 
-                if(m.find())
-                    return m.group();
+                String str = "";
+                while(m.find())
+                    str += m.group() + " ";
+                return str.trim();
             }
         }catch(final IOException e){
             e.printStackTrace();

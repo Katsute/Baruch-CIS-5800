@@ -57,6 +57,7 @@ const getLocation = async () => new Promise((res, rej) => {
  * @param {*} dir direction 0 | 1
  * @param {*} lat latitude
  * @param {*} lon longitude
+ * @param {*} lang ISO 2-letter language code
  * @returns bus
  */
 const getBusByCoord = async (route, dir, lat, lon, lang) => {
@@ -72,6 +73,7 @@ const getBusByCoord = async (route, dir, lat, lon, lang) => {
 
 /**
  * @param {*} id vehicle id
+ * @param {*} lang ISO 2-letter language code
  * @returns bus
  */
 const getBusByID = async (id, lang) => {
@@ -84,9 +86,10 @@ const getBusByID = async (id, lang) => {
 
 /**
  * @param {*} route route code
- * @param {*} dir direction 0 | 1
+ * @param {*} dir direction 1 | 3
  * @param {*} lat latitude
  * @param {*} lon longitude
+ * @param {*} lang ISO 2-letter language code
  * @returns bus
  */
 const getSubwayByCoord = async (route, dir, lat, lon, lang) => {
@@ -102,6 +105,7 @@ const getSubwayByCoord = async (route, dir, lat, lon, lang) => {
 
 /**
  * @param {*} id vehicle id
+ * @param {*} lang ISO 2-letter language code
  * @returns bus
  */
 const getSubwayByID = async (id, lang) => {

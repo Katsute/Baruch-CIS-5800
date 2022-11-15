@@ -51,5 +51,7 @@ const generate = (data) => {
 
     content += `<b>${data.route.shortName}</b> ${data.route.name}`;
 
+    content += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
     main.innerHTML = content; // write content onto the page
 }
