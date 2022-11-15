@@ -59,13 +59,14 @@ const getLocation = async () => new Promise((res, rej) => {
  * @param {*} lon longitude
  * @returns bus
  */
-const getBusByCoord = async (route, dir, lat, lon) => {
+const getBusByCoord = async (route, dir, lat, lon, lang) => {
     return await get("/request", {
         "type": "bus",
         "route": route,
         "direction": dir,
         "latitude": lat,
-        "longitude": lon
+        "longitude": lon,
+        "lang": lang ?? "en"
     });
 }
 
@@ -73,10 +74,11 @@ const getBusByCoord = async (route, dir, lat, lon) => {
  * @param {*} id vehicle id
  * @returns bus
  */
-const getBusByID = async (id) => {
+const getBusByID = async (id, lang) => {
     return await get("/request", {
         "type": "bus",
-        "id": id
+        "id": id,
+        "lang": lang ?? "en"
     });
 }
 
@@ -87,13 +89,14 @@ const getBusByID = async (id) => {
  * @param {*} lon longitude
  * @returns bus
  */
-const getSubwayByCoord = async (route, dir, lat, lon) => {
+const getSubwayByCoord = async (route, dir, lat, lon, lang) => {
     return await get("/request", {
         "type": "subway",
         "route": route,
         "direction": dir,
         "latitude": lat,
-        "longitude": lon
+        "longitude": lon,
+        "lang": lang ?? "en"
     });
 }
 
@@ -101,10 +104,11 @@ const getSubwayByCoord = async (route, dir, lat, lon) => {
  * @param {*} id vehicle id
  * @returns bus
  */
-const getSubwayByID = async (id) => {
+const getSubwayByID = async (id, lang) => {
     return await get("/request", {
         "type": "subway",
-        "id": id
+        "id": id,
+        "lang": lang ?? "en"
     });
 }
 

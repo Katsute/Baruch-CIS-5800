@@ -29,7 +29,12 @@ import dev.katsute.simplehttpserver.SimpleHttpHandler;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 final class RequestHandler implements SimpleHttpHandler {
 
@@ -50,7 +55,7 @@ final class RequestHandler implements SimpleHttpHandler {
             }
 
             // parameters
-            final Map<String, String> query = exchange.getGetMap();
+            final Map<String,String> query = exchange.getGetMap();
 
             final String type = query.get("type");
             {
@@ -59,6 +64,8 @@ final class RequestHandler implements SimpleHttpHandler {
                     return;
                 }
             }
+
+            final String lang = query.getOrDefault("lang", "en");
 
             final String id = query.get("id");
             final String route = query.get("route");
@@ -158,11 +165,12 @@ final class RequestHandler implements SimpleHttpHandler {
                     OUTER:
                     for(final Bus.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
-                            if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                            if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
                                 final String desc = alert.getDescription();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
-                                    .set("description", desc)
+                                    .set("description", alert.getDescription().trim())
+                                    .set("translated", translate(alert.getDescription().trim(), "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -191,11 +199,12 @@ final class RequestHandler implements SimpleHttpHandler {
                 OUTER:
                 for(final Bus.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
-                        if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                        if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
                             final String desc = alert.getDescription();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
-                                .set("description", desc)
+                                .set("description", alert.getDescription().trim())
+                                .set("translated", translate(alert.getDescription().trim(), "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -283,11 +292,12 @@ final class RequestHandler implements SimpleHttpHandler {
                     OUTER:
                     for(final Subway.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
-                            if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                            if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
                                 final String desc = alert.getDescription().toLowerCase();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
-                                    .set("description", alert.getDescription())
+                                    .set("description", alert.getDescription().trim())
+                                    .set("translated", translate(alert.getDescription().trim(), "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -319,11 +329,12 @@ final class RequestHandler implements SimpleHttpHandler {
                 OUTER:
                 for(final Subway.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
-                        if(per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() >= NOW){
+                        if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
                             final String desc = alert.getDescription().toLowerCase();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
-                                .set("description", alert.getDescription())
+                                .set("description", alert.getDescription().trim())
+                                .set("translated", translate(alert.getDescription().trim(), "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -388,6 +399,64 @@ final class RequestHandler implements SimpleHttpHandler {
                 Math.pow(Math.sin((λ2-λ1)/2), 2))
             )
         );
+    }
+
+    private static final Pattern trans = Pattern.compile("(?<=\"trans\": ?\").*?(?=\",)");
+
+    private static String translate(final String q, final String from, final String to){
+        if(from.equalsIgnoreCase(to))
+            return q;
+
+        final Map<String,String> query = new HashMap<String,String>(){{
+            put("client", "at");
+            put("dt", "t"); // sentences
+            put("dj", "1"); // as json
+            put("sl", from);
+            put("tl", to);
+            put("q", q);
+        }};
+
+        HttpURLConnection conn = null;
+        try{
+            conn = (HttpURLConnection) new URL("https://translate.google.com/translate_a/single").openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            conn.setRequestProperty("Content-Length", "0");
+            conn.setRequestProperty("Accept", "application/json;charset=UTF-8");
+
+            conn.getOutputStream().write(
+                query
+                    .entrySet()
+                    .stream()
+                    .map(e -> e.getKey() + "=" + e.getValue())
+                    .collect(Collectors.joining("&"))
+                    .getBytes(StandardCharsets.UTF_8)
+            );
+
+            try(
+                final InputStream IS = conn.getInputStream();
+                final InputStreamReader ISR = new InputStreamReader(IS, StandardCharsets.UTF_8);
+                final BufferedReader IN = new BufferedReader(ISR)
+            ){
+                String buffer;
+                final StringBuilder OUT = new StringBuilder();
+                while((buffer = IN.readLine()) != null)
+                    OUT.append(buffer);
+
+                final Matcher m = trans.matcher(OUT.toString());
+
+                if(m.find())
+                    return m.group();
+            }
+        }catch(final IOException e){
+            e.printStackTrace();
+        }finally{
+            if(conn != null)
+                conn.disconnect();
+        }
+        return q;
     }
 
 }

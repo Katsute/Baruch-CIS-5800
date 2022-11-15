@@ -17,14 +17,16 @@ const main = document.querySelector("main");
             params.route ?? "M1",
             params.direction ?? 1,
             params.latitude ?? LAT,
-            params.longitude ?? LON
+            params.longitude ?? LON,
+            params.lang
         );
     }else if(params.type == "subway"){
         data = await getSubwayByCoord(
             params.route ?? "6",
             params.direction ?? 1,
             params.latitude ?? LAT,
-            params.longitude ?? LON
+            params.longitude ?? LON,
+            params.lang
         );
     }else return console.error(`Unknown type: ${params.type}`);
 
@@ -32,7 +34,7 @@ const main = document.querySelector("main");
     setInterval(() => {
         main.innerHTML = "";
 
-        (params.type == "bus" ? getBusByID : getSubwayByID)(data.vehicle.id).then(generate);
+        (params.type == "bus" ? getBusByID : getSubwayByID)(data.vehicle.id, params.lang).then(generate);
     }, 60 * 1000);
 })();
 
