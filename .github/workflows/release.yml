@@ -28,10 +28,13 @@ jobs:
       - name: ✔️ Package with Maven
         run: mvn package -DskipTests --no-transfer-progress
 
+      - name: 📦 Copy Jar
+        run: cp target/mta-information-site.jar .
+
       - name: 📦 Zip All
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r all.zip site target/mta-information-site.jar
+          args: zip -qq -r all.zip site mta-information-site.jar
 
       - name: 🚀 Deploy to GitHub Releases
         uses: AButler/upload-release-assets@v2.0
