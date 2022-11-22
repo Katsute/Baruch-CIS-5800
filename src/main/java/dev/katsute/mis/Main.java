@@ -70,13 +70,13 @@ final class Main {
             final File bt = new File("bus-token.txt");
             if(!bt.exists()) throw new FileNotFoundException("File 'bus-token.txt' is missing");
             busToken = String.join("\n", Files.readAllLines(bt.toPath())).trim();
-            if(busToken.isEmpty())  throw new NullPointerException("Bus token is missing from 'bus-token.txt'");
+            if(busToken.isEmpty())  throw new NullPointerException("Bus token is missing from 'bus-token.txt', request a token at https://bt.mta.info/wiki/Developers/Index");
         }
         {
             final File bt = new File("subway-token.txt");
             if(!bt.exists()) throw new FileNotFoundException("File 'subway-token.txt' is missing");
             subwayToken = String.join("\n", Files.readAllLines(bt.toPath())).trim();
-            if(subwayToken.isEmpty())  throw new NullPointerException("Subway token is missing from 'subway-token.txt'");
+            if(subwayToken.isEmpty())  throw new NullPointerException("Subway token is missing from 'subway-token.txt', request a token at https://api.mta.info/#/signup");
         }
         System.out.println("Initializing MTA");
         // initialize MTA
