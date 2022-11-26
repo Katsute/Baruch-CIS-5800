@@ -17,8 +17,8 @@ Site that allows users to view upcoming stops and alerts for their current trip,
 
 #### 3️⃣ Download Required Resources
 
- 1. Download `site.zip` and `mta-information-site.jar` from the latest [release](https://github.com/Katsute/Baruch-CIS-5800/releases).
- 2. Extract the zip contents and save the jar in the same folder.
+ 1. Download `all.zip` from the latest [release](https://github.com/Katsute/Baruch-CIS-5800/releases).
+ 2. Extract the zip contents into a folder.
 
 <!--
  2. Download the following static data feeds from <http://web.mta.info/developers/developer-data-terms.html#data>.
