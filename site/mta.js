@@ -23,30 +23,19 @@
 const LAT = 40.74058128194693;
 const LON = -73.98325077286562;
 
-const __testMTA = async () => {
-    const bus = await getBusByCoord("M1", 0, LAT, LON);
-    const subway = await getSubwayByCoord(6, 0, LAT, LON);
-    console.log(bus);
-    console.log(await getBusByID(bus.vehicle.id));
-    console.log(subway);
-    console.log(await getSubwayByID(subway.vehicle.id));
-}
-
 /**
  * @returns [latitude, longitude]
  */
 const getLocation = async () => new Promise((res, rej) => {
     if(!navigator.geolocation){
         console.error("geolocation not supported");
-        rej("geolocation not supported");
+        res([LAT, LON]);
     }else{
         navigator.geolocation.getCurrentPosition(
-            (success) => {
-                res([success.coords.latitude, success.coords.longitude]);
-            },
+            (success) => res([success.coords.latitude, success.coords.longitude]),
             (err) => {
                 console.error(err);
-                rej(err);
+                res([LAT, LON]);
             }
         );
     }
@@ -61,6 +50,8 @@ const getLocation = async () => new Promise((res, rej) => {
  * @returns bus
  */
 const getBusByCoord = async (route, dir, lat, lon, lang) => {
+    +dir === 0 || +dir === 1 || console.warn(`Invalid direction ${dir}, expected 0 or 1`);
+
     return await get("/request", {
         "type": "bus",
         "route": route,
@@ -90,9 +81,11 @@ const getBusByID = async (id, lang) => {
  * @param {*} lat latitude
  * @param {*} lon longitude
  * @param {*} lang ISO 2-letter language code
- * @returns bus
+ * @returns subway
  */
 const getSubwayByCoord = async (route, dir, lat, lon, lang) => {
+    +dir === 1 || +dir === 3 || console.warn(`Invalid direction ${dir}, expected 1 or 3`);
+
     return await get("/request", {
         "type": "subway",
         "route": route,
@@ -106,7 +99,7 @@ const getSubwayByCoord = async (route, dir, lat, lon, lang) => {
 /**
  * @param {*} id vehicle id
  * @param {*} lang ISO 2-letter language code
- * @returns bus
+ * @returns subway
  */
 const getSubwayByID = async (id, lang) => {
     return await get("/request", {

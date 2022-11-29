@@ -31,10 +31,12 @@ const main = document.querySelector("main");
     }else return console.error(`Unknown type: ${params.type}`);
 
     generate(data);
+
+    const m = params.type == "bus" ? getBusByID : getSubwayByID;
+
     setInterval(() => {
         main.innerHTML = "";
-
-        (params.type == "bus" ? getBusByID : getSubwayByID)(data.vehicle.id, params.lang).then(generate);
+        m(data.vehicle.id, params.lang).then(generate);
     }, 60 * 1000);
 })();
 

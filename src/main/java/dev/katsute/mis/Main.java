@@ -24,6 +24,7 @@ import dev.katsute.simplehttpserver.handler.file.FileHandler;
 import dev.katsute.simplehttpserver.handler.file.FileOptions;
 
 import java.io.*;
+import java.net.BindException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -94,22 +95,26 @@ final class Main {
         System.out.println("Initializing server");
         // initialize server
         {
-            final SimpleHttpServer server = SimpleHttpServer.create(8080);
-            server.setExecutor(Executors.newCachedThreadPool());
+            try{
+                final SimpleHttpServer server = SimpleHttpServer.create(8080);
+                server.setExecutor(Executors.newCachedThreadPool());
 
-            final FileHandler handler = new MimeFileHandler();
-            final FileOptions options = new FileOptions.Builder()
-                .setLoadingOption(FileOptions.FileLoadingOption.LIVE)
-                .setWalk(true)
-                .build();
-            handler.addFile(new File("site/index.html"), "/", options);
-            handler.addDirectory(new File("site"), "/", options);
-            server.createContext("/", handler);
-            server.createContext("/request", new RequestHandler(mta));
+                final FileHandler handler = new MimeFileHandler();
+                final FileOptions options = new FileOptions.Builder()
+                    .setLoadingOption(FileOptions.FileLoadingOption.LIVE)
+                    .setWalk(true)
+                    .build();
+                handler.addFile(new File("site/index.html"), "/", options);
+                handler.addDirectory(new File("site"), "/", options);
+                server.createContext("/", handler);
+                server.createContext("/request", new RequestHandler(mta));
 
-            server.start();
+                server.start();
 
-            System.out.println("Server started at localhost:8080");
+                System.out.println("Server started at localhost:8080");
+            }catch(final BindException e){
+                System.out.println("Failed to start server, server is already running or port is occupied");
+            }
         }
     }
 
