@@ -35,7 +35,7 @@ final class Main {
 
     private static final Map<String,String> resources = new HashMap<String,String>(){{
         put("google_transit_subway"         , "http://web.mta.info/developers/data/nyct/subway/google_transit.zip");
-        put("google_transit_bronx"         , "http://web.mta.info/developers/data/nyct/bus/google_transit_bronx.zip");
+        put("google_transit_bronx"          , "http://web.mta.info/developers/data/nyct/bus/google_transit_bronx.zip");
         put("google_transit_brooklyn"       , "http://web.mta.info/developers/data/nyct/bus/google_transit_brooklyn.zip");
         put("google_transit_manhattan"      , "http://web.mta.info/developers/data/nyct/bus/google_transit_manhattan.zip");
         put("google_transit_queens"         , "http://web.mta.info/developers/data/nyct/bus/google_transit_queens.zip");

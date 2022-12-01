@@ -115,6 +115,10 @@ const getSubwayByID = async (id, lang) => {
  * @returns object response
  */
 const get = async (path, params) => {
+    const mock = Object.fromEntries(new URLSearchParams(window.location.search).entries()).mock;
+
+    if(mock !== undefined) params.mock = "true";
+
     return new Promise((res, rej) => {
         const xhr = new XMLHttpRequest();
         const query = !params ? "" : '?' + Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');

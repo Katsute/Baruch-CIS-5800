@@ -65,6 +65,8 @@ final class RequestHandler implements SimpleHttpHandler {
                 }
             }
 
+            final boolean mock = query.containsKey("mock");
+
             final String lang = query.getOrDefault("lang", "en");
 
             final String id = query.get("id");
@@ -166,12 +168,12 @@ final class RequestHandler implements SimpleHttpHandler {
                     for(final Bus.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
                             if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                                final String desc = alert.getDescription();
+                                final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
                                     .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                    .set("description", alert.getDescription().trim())
-                                    .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
+                                    .set("description", desc.trim())
+                                    .set("description_translated", translate(desc.trim(), "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -187,6 +189,9 @@ final class RequestHandler implements SimpleHttpHandler {
                         }
                     }
 
+                    if(mock && Mock.mock(.2))
+                        a.add(Mock.mockBusDelay(r.getRouteShortName(), s.getStopName(), lang));
+
                     stops.add(new JsonBuilder()
                         .set("id", s.getStopID())
                         .set("name", s.getStopName())
@@ -201,12 +206,12 @@ final class RequestHandler implements SimpleHttpHandler {
                 for(final Bus.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
                         if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                            final String desc = alert.getDescription();
+                            final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
                                 .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                .set("description", alert.getDescription().trim())
-                                .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
+                                .set("description", desc.trim())
+                                .set("description_translated", translate(desc.trim(), "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -221,6 +226,9 @@ final class RequestHandler implements SimpleHttpHandler {
                         }
                     }
                 }
+
+                if(mock && Mock.mock(.4))
+                    a.add(Mock.mockBusWeather(r.getRouteShortName(), lang));
 
                 final JsonBuilder json = new JsonBuilder()
                     .set("vehicle", new JsonBuilder()
@@ -295,12 +303,12 @@ final class RequestHandler implements SimpleHttpHandler {
                     for(final Subway.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
                             if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                                final String desc = alert.getDescription().toLowerCase();
+                                final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
                                     .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                    .set("description", alert.getDescription().trim())
-                                    .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
+                                    .set("description", desc.trim())
+                                    .set("description_translated", translate(desc.trim(), "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -319,6 +327,9 @@ final class RequestHandler implements SimpleHttpHandler {
                         }
                     }
 
+                    if(mock && Mock.mock(.2))
+                        a.add(Mock.mockSubwayDelay(r.getRouteShortName(), s.getStopName(), lang));
+
                     stops.add(new JsonBuilder()
                         .set("id", s.getStopID())
                         .set("name", s.getStopName())
@@ -333,12 +344,12 @@ final class RequestHandler implements SimpleHttpHandler {
                 for(final Subway.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
                         if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                            final String desc = alert.getDescription().toLowerCase();
+                            final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
                                 .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                .set("description", alert.getDescription().trim())
-                                .set("description_translated", translate(alert.getDescription().trim(), "en", lang))
+                                .set("description", desc.trim())
+                                .set("description_translated", translate(desc.trim(), "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -355,6 +366,9 @@ final class RequestHandler implements SimpleHttpHandler {
                             break OUTER;
                         }
                     }
+
+                    if(mock && Mock.mock(.4))
+                        a.add(Mock.mockSubwayWeather(r.getRouteShortName(), lang));
                 }
 
                 final JsonBuilder json = new JsonBuilder()
@@ -407,7 +421,7 @@ final class RequestHandler implements SimpleHttpHandler {
 
     private static final Pattern trans = Pattern.compile("(?<=\"trans\": ?\").*?(?=\",)");
 
-    private static String translate(final String q, final String from, final String to){
+    static String translate(final String q, final String from, final String to){
         if(from.equalsIgnoreCase(to))
             return q;
 
