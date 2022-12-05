@@ -6,7 +6,7 @@
 
     <groupId>dev.katsute</groupId>
     <artifactId>mta-information-site</artifactId>
-    <version>3.37.0</version>
+    <version>3.37.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

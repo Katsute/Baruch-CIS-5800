@@ -431,7 +431,7 @@ final class RequestHandler implements SimpleHttpHandler {
             put("dj", "1"); // as json
             put("sl", from); // source
             put("tl", to); // target
-            put("q", q.replace("@", "at")); // query
+            put("q", q.replace("@", "at").replace("&", "and")); // query
         }};
 
         HttpURLConnection conn = null;
@@ -471,7 +471,14 @@ final class RequestHandler implements SimpleHttpHandler {
                 return str.trim();
             }
         }catch(final IOException e){
-            e.printStackTrace();
+            try{
+                if(conn.getResponseCode() == 429)
+                    System.out.println("Translate API is rate limited");
+                else
+                    e.printStackTrace();
+            }catch (final IOException e1) {
+                e1.printStackTrace();
+            }
         }finally{
             if(conn != null)
                 conn.disconnect();
