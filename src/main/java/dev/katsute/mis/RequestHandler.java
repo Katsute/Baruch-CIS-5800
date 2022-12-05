@@ -366,10 +366,10 @@ final class RequestHandler implements SimpleHttpHandler {
                             break OUTER;
                         }
                     }
-
-                    if(mock && Mock.mock(.4))
-                        a.add(Mock.mockSubwayWeather(r.getRouteShortName(), lang));
                 }
+
+                if(mock && Mock.mock(.4))
+                    a.add(Mock.mockSubwayWeather(r.getRouteShortName(), lang));
 
                 final JsonBuilder json = new JsonBuilder()
                     .set("vehicle", new JsonBuilder()

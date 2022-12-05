@@ -2,7 +2,7 @@
 
 **CIS 5800 - Information Technology Development and Project Management**
 
-Site that allows users to view upcoming stops and alerts for their current trip, displaying information visually or translated.
+Website that allows users to view upcoming stops and alerts for their current trip, displaying information visually or translated.
 
 ## Installation
 
@@ -20,44 +20,24 @@ Site that allows users to view upcoming stops and alerts for their current trip,
  1. Download `all.zip` from the latest [release](https://github.com/Katsute/Baruch-CIS-5800/releases).
  2. Extract the zip contents into a folder.
 
-<!--
- 2. Download the following static data feeds from <http://web.mta.info/developers/developer-data-terms.html#data>.
-
-    - **New York City Transit Subway**
-    - New York City Transit Bus
-      - **Bronx**
-      - **Brooklyn**
-      - **Manhattan**
-      - **Queens**
-      - **Staten Island**
-    - **Bus Company**
-
- 3. Save these zip files in the same folder as this program. The zip files **must** be named as the following:
-
-    - `google_transit_subway.zip`
-    - `google_transit_bronx.zip`
-    - `google_transit_brooklyn.zip`
-    - `google_transit_manhattan.zip`
-    - `google_transit_queens.zip`
-    - `google_transit_staten_island.zip`
-    - `google_transit_bus_company.zip`
--->
-
 #### 4️⃣ Setup the Program
 
  1. Write the bus token to a file named `bus-token.txt` in the same directory.
  2. Write the subway token to a file named `subway-token.txt` in the same directory.
- 3. Run the jar file from the command line to start the server. **Do not click the jar**, if you click the jar you will have to use task manager to close it.
 
-    ```sh
-    java -jar mta-information-site.jar
-    ```
+    Your folder should look like this:
+
+    ![setup](https://raw.githubusercontent.com/Katsute/Baruch-CIS-5800/main/setup.png)
+
+ 3. Run the jar file from either:
+
+    * The command line using `java -jar mta-information-site.jar`
+    * The batch file `run.bat` (Windows)
+    * The shell file `run.sh` (Bash)
+
+    **Do not click the jar file itself,** this will run the application in the background and will require using the task manager to close it.
+
  4. Open your browser to `localhost:8080` see the live site.
- 5. Modify site pages in the `site` folder.
-
-Your folder should look like this:
-
-![setup](https://raw.githubusercontent.com/Katsute/Baruch-CIS-5800/main/setup.png)
 
 ### 💼 License
 

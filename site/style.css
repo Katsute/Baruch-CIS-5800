@@ -5,6 +5,17 @@
     outline: none;
     scroll-behavior: smooth;
 
+    box-sizing: content-box;
+    -ms-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+
+}
+
+*::-webkit-scrollbar {
+
+    display: none;
+
 }
 
 html {
@@ -16,7 +27,14 @@ html {
 body {
 
     height: 100%;
+    margin: 0;
     overflow: auto;
+
+}
+
+main {
+
+    padding: 2rem 0;
 
 }
 
@@ -29,5 +47,198 @@ img {
 a:visited {
 
     color: blue;
+
+}
+
+label {
+
+    color: white;
+
+    font-size: larger;
+    font-weight: bold;
+
+}
+
+form > ul {
+
+    padding-left: 0;
+
+}
+
+input, select, button {
+
+    border-radius: .5rem;
+
+    font-size: large;
+    font-weight: bold;
+
+}
+
+#live-tracking * {
+
+    color: white;
+    text-align: left;
+
+}
+
+#live-tracking ul {
+
+    list-style: unset;
+
+}
+
+#live-tracking ol > li > ul {
+
+    list-style: disc;
+
+}
+
+#live-tracking ol > li:first-of-type > h3::after {
+
+    content: "< NEXT STOP";
+    padding-left: .5rem;
+
+    animation: blink 1s infinite;
+
+}
+
+@keyframes blink {
+
+    0% { color: yellow; }
+    50% { color: white; }
+    100% { color: yellow; }
+
+}
+
+#live-tracking h1 {
+
+    margin: 1rem 0;
+    letter-spacing: .25rem;
+
+}
+
+#live-tracking h3 {
+
+    margin: 0 0 1rem 0;
+
+}
+
+/* --- */
+
+body {
+
+    background-image: url("https://images.hdqwalls.com/wallpapers/new-york-subway-train-4k-ri.jpg");
+
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+}
+
+#tit h2 {
+
+    text-shadow: white 1px 0 10px;
+
+}
+
+h1 {
+
+    text-align: center;
+    letter-spacing: 10px;
+    font-size: 35px;
+    color: #2360A5;
+
+}
+
+h2 {
+
+    text-align: center;
+    color:#2360A5;
+
+}
+
+.center {
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#container {
+
+    width: 100%;
+    margin: 2rem auto 0 auto;
+
+}
+
+@media (min-width: 576px) {
+
+    #container {
+
+        max-width: 540px;
+
+    }
+
+}
+
+@media (min-width: 768px) {
+
+    #container {
+
+        max-width: 720px;
+
+    }
+
+}
+
+form {
+
+    text-align: center;
+    width: 100%;
+    background: #152233;
+    opacity: 0.93;
+    padding: 16px;
+    border: 3px solid #2360A5;
+
+    border-radius: 1.5rem;
+
+}
+
+form ul {
+
+    list-style: none;
+
+}
+
+input, select{
+
+    margin: 16px;
+    border: 2px solid #2360A5;
+
+    width: 50%;
+
+    padding: 12px;
+
+}
+
+#submit button {
+
+    border: 2px solid #2360A5;
+    padding: 16px 85px;
+    font-weight: bold;
+    font-size: 30px;
+    cursor: pointer;
+    background: #152233;
+    opacity: 1.0;
+    color: white;
+    letter-spacing: 3px;
+
+}
+
+#submit button:hover {
+
+    background-color: #B53737;
 
 }

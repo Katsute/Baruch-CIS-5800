@@ -13,155 +13,185 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div>
-            <b>Developer Tools:</b>
-
-            [<a href="live">Tracking</a>]
-
-            <hr>
-        </div>
-
         <main>
-            Hello World!
+            <div id="tit">
+                <a href="/">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/MTA_NYC_logo.svg/1862px-MTA_NYC_logo.svg.png" width="100" class="center">
+                </a>
 
-            <br>
-            <!-- https://cloud.google.com/translate/docs/languages -->
-            <select name="lang">
-                <option value="en" selected="" name="English">English</option>
-                <option value="af" name="Afrikaans">Afrikaans</option>
-                <option value="sq" name="Albanian">Albanian</option>
-                <option value="am" name="Amharic">Amharic (አማርኛ)</option>
-                <option value="ar" name="Arabic">Arabic (العربية)</option>
-                <option value="hy" name="Armenian">Armenian</option>
-                <option value="as" name="Assamese">Assamese</option>
-                <option value="ay" name="Aymara">Aymara</option>
-                <option value="az" name="Azerbaijani">Azerbaijani (azərbaycan)</option>
-                <option value="bm" name="Bambara">Bambara</option>
-                <option value="eu" name="Basque">Basque</option>
-                <option value="be" name="Belarusian">Belarusian</option>
-                <option value="bn" name="Bengali">Bengali (বাংলা)</option>
-                <option value="bho" name="Bhojpuri">Bhojpuri</option>
-                <option value="bs" name="Bosnian">Bosnian (bosanski)</option>
-                <option value="bg" name="Bulgarian">Bulgarian (български)</option>
-                <option value="ca" name="Catalan">Catalan (català)</option>
-                <option value="ceb" name="Cebuano">Cebuano</option>
-                <option value="zh-CN" name="Chinese (Simplified)">Chinese (Simplified) (中文（中国）)</option>
-                <option value="zh-TW" name="Chinese (Traditional)">Chinese (Traditional) (中文（台灣）)</option>
-                <option value="co" name="Corsican">Corsican</option>
-                <option value="hr" name="Croatian">Croatian (hrvatski)</option>
-                <option value="cs" name="Czech">Czech (čeština)</option>
-                <option value="da" name="Danish">Danish (dansk)</option>
-                <option value="dv" name="Dhivehi">Dhivehi</option>
-                <option value="doi" name="Dogri">Dogri</option>
-                <option value="nl" name="Dutch">Dutch (Nederlands)</option>
-                <option value="eo" name="Esperanto">Esperanto</option>
-                <option value="et" name="Estonian">Estonian (eesti)</option>
-                <option value="ee" name="Ewe">Ewe</option>
-                <option value="fil" name="Filipino">Filipino</option>
-                <option value="fi" name="Finnish">Finnish (suomi)</option>
-                <option value="fr" name="French">French (français)</option>
-                <option value="fy" name="Frisian">Frisian (Western Frisian)</option>
-                <option value="gl" name="Galician">Galician</option>
-                <option value="ka" name="Georgian">Georgian</option>
-                <option value="de" name="German">German (Deutsch)</option>
-                <option value="el" name="Greek">Greek (Ελληνικά)</option>
-                <option value="gn" name="Guarani">Guarani</option>
-                <option value="gu" name="Gujarati">Gujarati (ગુજરાતી)</option>
-                <option value="ht" name="Haitian Creole">Haitian Creole</option>
-                <option value="ha" name="Hausa">Hausa</option>
-                <option value="haw" name="Hawaiian">Hawaiian</option>
-                <option value="he" name="Hebrew">Hebrew (עברית)</option>
-                <option value="hi" name="Hindi">Hindi (हिन्दी)</option>
-                <option value="hmn" name="Hmong">Hmong</option>
-                <option value="hu" name="Hungarian">Hungarian (magyar)</option>
-                <option value="is" name="Icelandic">Icelandic</option>
-                <option value="ig" name="Igbo">Igbo</option>
-                <option value="ilo" name="Ilocano">Ilocano</option>
-                <option value="id" name="Indonesian">Indonesian (Indonesia)</option>
-                <option value="ga" name="Irish">Irish</option>
-                <option value="it" name="Italian">Italian (italiano)</option>
-                <option value="ja" name="Japanese">Japanese (日本語)</option>
-                <option value="jv" name="Javanese">Javanese</option>
-                <option value="kn" name="Kannada">Kannada (ಕನ್ನಡ)</option>
-                <option value="kk" name="Kazakh">Kazakh</option>
-                <option value="km" name="Khmer">Khmer</option>
-                <option value="rw" name="Kinyarwanda">Kinyarwanda</option>
-                <option value="gom" name="Konkani">Konkani</option>
-                <option value="ko" name="Korean">Korean (한국어)</option>
-                <option value="kri" name="Krio">Krio</option>
-                <option value="ku" name="Kurdish">Kurdish</option>
-                <option value="ckb" name="Kurdish (Sorani)">Kurdish (Sorani)</option>
-                <option value="ky" name="Kyrgyz">Kyrgyz</option>
-                <option value="lo" name="Lao">Lao</option>
-                <option value="la" name="Latin">Latin</option>
-                <option value="lv" name="Latvian">Latvian (latviešu)</option>
-                <option value="ln" name="Lingala">Lingala</option>
-                <option value="lt" name="Lithuanian">Lithuanian (lietuvių)</option>
-                <option value="lg" name="Luganda">Luganda (Ganda)</option>
-                <option value="lb" name="Luxembourgish">Luxembourgish</option>
-                <option value="mk" name="Macedonian">Macedonian</option>
-                <option value="mai" name="Maithili">Maithili</option>
-                <option value="mg" name="Malagasy">Malagasy</option>
-                <option value="ms" name="Malay">Malay (Melayu)</option>
-                <option value="ml" name="Malayalam">Malayalam (മലയാളം)</option>
-                <option value="mt" name="Maltese">Maltese</option>
-                <option value="mi" name="Maori">Maori (Māori)</option>
-                <option value="mr" name="Marathi">Marathi (मराठी)</option>
-                <option value="mni-Mtei" name="Meiteilon">Meiteilon (Meitei Mayek)</option>
-                <option value="lus" name="Mizo">Mizo</option>
-                <option value="mn" name="Mongolian">Mongolian</option>
-                <option value="my" name="Myanmar">Myanmar (Burmese)</option>
-                <option value="ne" name="Nepali">Nepali</option>
-                <option value="no" name="Norwegian">Norwegian (norsk)</option>
-                <option value="ny" name="Nyanja">Nyanja</option>
-                <option value="or" name="Odia">Odia</option>
-                <option value="om" name="Oromo">Oromo</option>
-                <option value="ps" name="Pashto">Pashto</option>
-                <option value="fa" name="Persian">Persian (فارسی)</option>
-                <option value="pl" name="Polish">Polish (polski)</option>
-                <option value="pt" name="Portuguese">Portuguese (português)</option>
-                <option value="pa" name="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
-                <option value="qu" name="Quechua">Quechua</option>
-                <option value="ro" name="Romanian">Romanian (română)</option>
-                <option value="ru" name="Russian">Russian (русский)</option>
-                <option value="sm" name="Samoan">Samoan</option>
-                <option value="sa" name="Sanskrit">Sanskrit</option>
-                <option value="gd" name="Scots Gaelic">Scots Gaelic (Scottish Gaelic)</option>
-                <option value="nso" name="Sepedi">Sepedi (Northern Sotho)</option>
-                <option value="sr" name="Serbian">Serbian (српски)</option>
-                <option value="st" name="Sesotho">Sesotho (Southern Sotho)</option>
-                <option value="sn" name="Shona">Shona</option>
-                <option value="sd" name="Sindhi">Sindhi</option>
-                <option value="si" name="Sinhala (Sinhalese)">Sinhala (Sinhalese)</option>
-                <option value="sk" name="Slovak">Slovak (slovenčina)</option>
-                <option value="sl" name="Slovenian">Slovenian (slovenščina)</option>
-                <option value="so" name="Somali">Somali</option>
-                <option value="es" name="Spanish">Spanish (español)</option>
-                <option value="su" name="Sundanese">Sundanese</option>
-                <option value="sw" name="Swahili">Swahili (Kiswahili)</option>
-                <option value="sv" name="Swedish">Swedish (svenska)</option>
-                <option value="tl" name="Tagalog">Tagalog (Filipino)</option>
-                <option value="tg" name="Tajik">Tajik</option>
-                <option value="ta" name="Tamil">Tamil (தமிழ்)</option>
-                <option value="tt" name="Tatar">Tatar</option>
-                <option value="te" name="Telugu">Telugu (తెలుగు)</option>
-                <option value="th" name="Thai">Thai (ไทย)</option>
-                <option value="ti" name="Tigrinya">Tigrinya</option>
-                <option value="ts" name="Tsonga">Tsonga</option>
-                <option value="tr" name="Turkish">Turkish (Türkçe)</option>
-                <option value="tk" name="Turkmen">Turkmen</option>
-                <option value="ak" name="Twi">Twi (Akan)</option>
-                <option value="uk" name="Ukrainian">Ukrainian (українська)</option>
-                <option value="ur" name="Urdu">Urdu (اردو)</option>
-                <option value="ug" name="Uyghur">Uyghur</option>
-                <option value="uz" name="Uzbek">Uzbek (o‘zbek)</option>
-                <option value="vi" name="Vietnamese">Vietnamese (Tiếng Việt)</option>
-                <option value="cy" name="Welsh">Welsh</option>
-                <option value="xh" name="Xhosa">Xhosa</option>
-                <option value="yi" name="Yiddish">Yiddish</option>
-                <option value="yo" name="Yoruba">Yoruba</option>
-                <option value="zu" name="Zulu">Zulu</option>
-            </select>
+                <h2>Welcome to the MTA Tracking Site</h2>
+            </div>
+
+            <div id="container">
+                <form onsubmit="redir(); return false;">
+                    <ul>
+                        <li>
+                            <label>Service</label>
+                            <br>
+                            <select name="mode">
+                                <option value="bus">🚌 Bus</option>
+                                <option value="subway">🚇 Subway</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>Line</label>
+                            <br>
+                            <input name="line" placeholder="Line">
+                        <li>
+                            <label>Direction</label>
+                            <br>
+                            <select name="direction">
+                                <option value="0">🔼 Uptown</option>
+                                <option value="1">🔽 Downtown</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>Language</label>
+                            <br>
+                            <!-- https://cloud.google.com/translate/docs/languages -->
+                            <select name="lang">
+                                <option value="en" selected="" name="English">English</option>
+                                <option value="af" name="Afrikaans">Afrikaans</option>
+                                <option value="sq" name="Albanian">Albanian</option>
+                                <option value="am" name="Amharic">Amharic (አማርኛ)</option>
+                                <option value="ar" name="Arabic">Arabic (العربية)</option>
+                                <option value="hy" name="Armenian">Armenian</option>
+                                <option value="as" name="Assamese">Assamese</option>
+                                <option value="ay" name="Aymara">Aymara</option>
+                                <option value="az" name="Azerbaijani">Azerbaijani (azərbaycan)</option>
+                                <option value="bm" name="Bambara">Bambara</option>
+                                <option value="eu" name="Basque">Basque</option>
+                                <option value="be" name="Belarusian">Belarusian</option>
+                                <option value="bn" name="Bengali">Bengali (বাংলা)</option>
+                                <option value="bho" name="Bhojpuri">Bhojpuri</option>
+                                <option value="bs" name="Bosnian">Bosnian (bosanski)</option>
+                                <option value="bg" name="Bulgarian">Bulgarian (български)</option>
+                                <option value="ca" name="Catalan">Catalan (català)</option>
+                                <option value="ceb" name="Cebuano">Cebuano</option>
+                                <option value="zh-CN" name="Chinese (Simplified)">Chinese (Simplified) (中文（中国）)</option>
+                                <option value="zh-TW" name="Chinese (Traditional)">Chinese (Traditional) (中文（台灣）)</option>
+                                <option value="co" name="Corsican">Corsican</option>
+                                <option value="hr" name="Croatian">Croatian (hrvatski)</option>
+                                <option value="cs" name="Czech">Czech (čeština)</option>
+                                <option value="da" name="Danish">Danish (dansk)</option>
+                                <option value="dv" name="Dhivehi">Dhivehi</option>
+                                <option value="doi" name="Dogri">Dogri</option>
+                                <option value="nl" name="Dutch">Dutch (Nederlands)</option>
+                                <option value="eo" name="Esperanto">Esperanto</option>
+                                <option value="et" name="Estonian">Estonian (eesti)</option>
+                                <option value="ee" name="Ewe">Ewe</option>
+                                <option value="fil" name="Filipino">Filipino</option>
+                                <option value="fi" name="Finnish">Finnish (suomi)</option>
+                                <option value="fr" name="French">French (français)</option>
+                                <option value="fy" name="Frisian">Frisian (Western Frisian)</option>
+                                <option value="gl" name="Galician">Galician</option>
+                                <option value="ka" name="Georgian">Georgian</option>
+                                <option value="de" name="German">German (Deutsch)</option>
+                                <option value="el" name="Greek">Greek (Ελληνικά)</option>
+                                <option value="gn" name="Guarani">Guarani</option>
+                                <option value="gu" name="Gujarati">Gujarati (ગુજરાતી)</option>
+                                <option value="ht" name="Haitian Creole">Haitian Creole</option>
+                                <option value="ha" name="Hausa">Hausa</option>
+                                <option value="haw" name="Hawaiian">Hawaiian</option>
+                                <option value="he" name="Hebrew">Hebrew (עברית)</option>
+                                <option value="hi" name="Hindi">Hindi (हिन्दी)</option>
+                                <option value="hmn" name="Hmong">Hmong</option>
+                                <option value="hu" name="Hungarian">Hungarian (magyar)</option>
+                                <option value="is" name="Icelandic">Icelandic</option>
+                                <option value="ig" name="Igbo">Igbo</option>
+                                <option value="ilo" name="Ilocano">Ilocano</option>
+                                <option value="id" name="Indonesian">Indonesian (Indonesia)</option>
+                                <option value="ga" name="Irish">Irish</option>
+                                <option value="it" name="Italian">Italian (italiano)</option>
+                                <option value="ja" name="Japanese">Japanese (日本語)</option>
+                                <option value="jv" name="Javanese">Javanese</option>
+                                <option value="kn" name="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                <option value="kk" name="Kazakh">Kazakh</option>
+                                <option value="km" name="Khmer">Khmer</option>
+                                <option value="rw" name="Kinyarwanda">Kinyarwanda</option>
+                                <option value="gom" name="Konkani">Konkani</option>
+                                <option value="ko" name="Korean">Korean (한국어)</option>
+                                <option value="kri" name="Krio">Krio</option>
+                                <option value="ku" name="Kurdish">Kurdish</option>
+                                <option value="ckb" name="Kurdish (Sorani)">Kurdish (Sorani)</option>
+                                <option value="ky" name="Kyrgyz">Kyrgyz</option>
+                                <option value="lo" name="Lao">Lao</option>
+                                <option value="la" name="Latin">Latin</option>
+                                <option value="lv" name="Latvian">Latvian (latviešu)</option>
+                                <option value="ln" name="Lingala">Lingala</option>
+                                <option value="lt" name="Lithuanian">Lithuanian (lietuvių)</option>
+                                <option value="lg" name="Luganda">Luganda (Ganda)</option>
+                                <option value="lb" name="Luxembourgish">Luxembourgish</option>
+                                <option value="mk" name="Macedonian">Macedonian</option>
+                                <option value="mai" name="Maithili">Maithili</option>
+                                <option value="mg" name="Malagasy">Malagasy</option>
+                                <option value="ms" name="Malay">Malay (Melayu)</option>
+                                <option value="ml" name="Malayalam">Malayalam (മലയാളം)</option>
+                                <option value="mt" name="Maltese">Maltese</option>
+                                <option value="mi" name="Maori">Maori (Māori)</option>
+                                <option value="mr" name="Marathi">Marathi (मराठी)</option>
+                                <option value="mni-Mtei" name="Meiteilon">Meiteilon (Meitei Mayek)</option>
+                                <option value="lus" name="Mizo">Mizo</option>
+                                <option value="mn" name="Mongolian">Mongolian</option>
+                                <option value="my" name="Myanmar">Myanmar (Burmese)</option>
+                                <option value="ne" name="Nepali">Nepali</option>
+                                <option value="no" name="Norwegian">Norwegian (norsk)</option>
+                                <option value="ny" name="Nyanja">Nyanja</option>
+                                <option value="or" name="Odia">Odia</option>
+                                <option value="om" name="Oromo">Oromo</option>
+                                <option value="ps" name="Pashto">Pashto</option>
+                                <option value="fa" name="Persian">Persian (فارسی)</option>
+                                <option value="pl" name="Polish">Polish (polski)</option>
+                                <option value="pt" name="Portuguese">Portuguese (português)</option>
+                                <option value="pa" name="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                                <option value="qu" name="Quechua">Quechua</option>
+                                <option value="ro" name="Romanian">Romanian (română)</option>
+                                <option value="ru" name="Russian">Russian (русский)</option>
+                                <option value="sm" name="Samoan">Samoan</option>
+                                <option value="sa" name="Sanskrit">Sanskrit</option>
+                                <option value="gd" name="Scots Gaelic">Scots Gaelic (Scottish Gaelic)</option>
+                                <option value="nso" name="Sepedi">Sepedi (Northern Sotho)</option>
+                                <option value="sr" name="Serbian">Serbian (српски)</option>
+                                <option value="st" name="Sesotho">Sesotho (Southern Sotho)</option>
+                                <option value="sn" name="Shona">Shona</option>
+                                <option value="sd" name="Sindhi">Sindhi</option>
+                                <option value="si" name="Sinhala (Sinhalese)">Sinhala (Sinhalese)</option>
+                                <option value="sk" name="Slovak">Slovak (slovenčina)</option>
+                                <option value="sl" name="Slovenian">Slovenian (slovenščina)</option>
+                                <option value="so" name="Somali">Somali</option>
+                                <option value="es" name="Spanish">Spanish (español)</option>
+                                <option value="su" name="Sundanese">Sundanese</option>
+                                <option value="sw" name="Swahili">Swahili (Kiswahili)</option>
+                                <option value="sv" name="Swedish">Swedish (svenska)</option>
+                                <option value="tl" name="Tagalog">Tagalog (Filipino)</option>
+                                <option value="tg" name="Tajik">Tajik</option>
+                                <option value="ta" name="Tamil">Tamil (தமிழ்)</option>
+                                <option value="tt" name="Tatar">Tatar</option>
+                                <option value="te" name="Telugu">Telugu (తెలుగు)</option>
+                                <option value="th" name="Thai">Thai (ไทย)</option>
+                                <option value="ti" name="Tigrinya">Tigrinya</option>
+                                <option value="ts" name="Tsonga">Tsonga</option>
+                                <option value="tr" name="Turkish">Turkish (Türkçe)</option>
+                                <option value="tk" name="Turkmen">Turkmen</option>
+                                <option value="ak" name="Twi">Twi (Akan)</option>
+                                <option value="uk" name="Ukrainian">Ukrainian (українська)</option>
+                                <option value="ur" name="Urdu">Urdu (اردو)</option>
+                                <option value="ug" name="Uyghur">Uyghur</option>
+                                <option value="uz" name="Uzbek">Uzbek (o‘zbek)</option>
+                                <option value="vi" name="Vietnamese">Vietnamese (Tiếng Việt)</option>
+                                <option value="cy" name="Welsh">Welsh</option>
+                                <option value="xh" name="Xhosa">Xhosa</option>
+                                <option value="yi" name="Yiddish">Yiddish</option>
+                                <option value="yo" name="Yoruba">Yoruba</option>
+                                <option value="zu" name="Zulu">Zulu</option>
+                            </select>
+                        </li>
+                        <div id="submit">
+                            <br>
+                            <button type="submit">Search</button>
+                        </div>
+                </form>
+            </div>
         </main>
         <script src="mta.js"></script>
         <script defer src="index.js"></script>

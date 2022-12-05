@@ -1,8 +1,6 @@
 "use strict";
 
-// ⇊ DO NOT EDIT THIS ⇊
-
-const main = document.querySelector("main");
+const main = document.querySelector("div#live-tracking");
 
 (async () => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search).entries());
@@ -35,25 +33,83 @@ const main = document.querySelector("main");
     const m = params.type == "bus" ? getBusByID : getSubwayByID;
 
     setInterval(() => {
-        main.innerHTML = "";
         m(data.vehicle.id, params.lang).then(generate);
     }, 60 * 1000);
 })();
 
-// ⇈ DO NOT EDIT THIS ⇈
-
 const generate = (data) => {
-    console.info(data); // open the console to see vehicle data
+    console.info(data);
 
     let content = "";
 
-    // generate the site here ↓
+    content += `<h1 style="color: white">${data.route.shortName} ${data.route.name}</h1>`;
 
-    content += "<b>Hello World!</b><br><br>";
+    content += "<div>";
 
-    content += `<b>${data.route.shortName}</b> ${data.route.name}`;
+    if(data.alerts.length > 0){
+        content += "<h3>⚠️ Alerts</h3>";
+        content += "<ul>";
+        for(const alert of data.alerts){
+            content += "<li>";
+            content += "<span>";
+            if(alert.construction) content += "🚧";
+            if(alert.ems) content += "🚑";
+            if(alert.express) content += "💨";
+            if(alert.fire) content += "🔥";
+            if(alert.local) content += "🐌";
+            if(alert.police) content += "👮‍♂️";
+            if(alert.shuttle) content += "🚌";
+            if(alert.skip) content += "⚠️";
+            if(alert.slow) content += "🐌";
+            if(alert.weather) content += "🌧";
+            content += "</span>";
+            content += `<p>${alert.description}</p>`;
+            if(alert.description != alert.description_translated)
+                content += `<p>${alert.description_translated}</p>`;
+            content += "</li>";
+        }
+        content += "</ul>";
+    }
 
-    content += `<pre style="white-space:pre-wrap">${JSON.stringify(data, null, 2)}</pre>`;
+    content += "</div>";
+
+    content += "<h3>🚏 Stops</h3>";
+
+    content += "<ol>";
+
+    for(const stop of data.trip){
+        content += "<li>";
+
+        content += `<h3>${stop.name}</h3>`;
+
+        if(stop.alerts.length > 0){
+            content += "<ul>";
+            for(const alert of stop.alerts){
+                content += "<li>";
+                content += "<span>";
+                if(alert.construction) content += "🚧";
+                if(alert.ems) content += "🚑";
+                if(alert.express) content += "💨";
+                if(alert.fire) content += "🔥";
+                if(alert.local) content += "🐌";
+                if(alert.police) content += "👮‍♂️";
+                if(alert.shuttle) content += "🚌";
+                if(alert.skip) content += "⚠️";
+                if(alert.slow) content += "🐌";
+                if(alert.weather) content += "🌧";
+                content += "</span>";
+                content += `<p>${alert.description}</p>`;
+                if(alert.description != alert.description_translated)
+                    content += `<p>${alert.description_translated}</p>`;
+                content += "</li>";
+            }
+            content += "</ul>";
+        }
+
+        content += "</li>";
+    }
+
+    content += "</ol>";
 
     main.innerHTML = content; // write content onto the page
 }

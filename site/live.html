@@ -13,20 +13,22 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div>
-            <b>Developer Tools:</b>
-
-            [<a href="/">Home</a>]
-            [<a href="?type=bus&route=M1&direction=1">M1 Bus</a> | <a href="?type=bus&route=M1&direction=1&lang=ja">translated</a> | <a href="?type=bus&route=M1&direction=1&lang=ja&mock">mock alerts</a>]
-            [<a href="?type=subway&route=6&direction=1">6 Subway</a> | <a href="?type=subway&route=6&direction=1&lang=ja">translated</a> | <a href="?type=subway&route=6&direction=1&lang=ja&mock">mock alerts</a>]
-
-            <i>Open developer tools for more information</i>
-
-            <hr>
-        </div>
-
         <main>
+            <div id="tit">
+                <a href="/">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/MTA_NYC_logo.svg/1862px-MTA_NYC_logo.svg.png" width="100" class="center">
+                </a>
 
+                <h2>Welcome to the MTA Tracking Site</h2>
+            </div>
+
+            <div id="container">
+                <form>
+                    <div id="live-tracking">
+                        <p>content loading, please wait...</p>
+                    </div>
+                </form>
+            </div>
         </main>
 
         <script src="mta.js"></script>
