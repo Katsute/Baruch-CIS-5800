@@ -472,7 +472,7 @@ final class RequestHandler implements SimpleHttpHandler {
             }
         }catch(final IOException e){
             try{
-                if(conn.getResponseCode() == 429)
+                if(conn != null && conn.getResponseCode() == 429)
                     System.out.println("Translate API is rate limited");
                 else
                     e.printStackTrace();

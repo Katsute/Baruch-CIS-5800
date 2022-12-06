@@ -37,7 +37,7 @@ jobs:
           args: zip -qq -r all.zip site mta-information-site.jar
 
       - name: 🚀 Deploy to GitHub Releases
-        uses: AButler/upload-release-assets@v2.0
+        uses: AButler/upload-release-assets@v2.0.2
         with:
           files: 'all.zip'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
