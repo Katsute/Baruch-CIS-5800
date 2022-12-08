@@ -57,12 +57,13 @@ abstract class Mock {
         );
     }
 
-    private static JsonBuilder mockAlert(final String desc, final String lang){
+    private static JsonBuilder mockAlert(final String description, final String lang){
+        final String desc = description.trim().toLowerCase();
         return new JsonBuilder()
-            .set("header", desc)
-            .set("header_translated", RequestHandler.translate(desc.trim(), "en", lang))
-            .set("description", desc.trim())
-            .set("description_translated", RequestHandler.translate(desc.trim(), "en", lang))
+            .set("header", description.trim())
+            .set("header_translated", RequestHandler.translate(description.trim(), "en", lang))
+            .set("description", description.trim())
+            .set("description_translated", RequestHandler.translate(description.trim(), "en", lang))
             .set("type", "Delays")
             .set("effect", "UNKNOWN_EFFECT")
             .set("slow", desc.contains("slow") || desc.contains("delay"))

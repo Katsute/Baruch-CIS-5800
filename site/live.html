@@ -11,6 +11,10 @@
         <meta http-equiv="Expires" content="0" />
 
         <link rel="stylesheet" href="style.css">
+
+        <script>
+            const mock = () => window.location.href = `${window.location.href}&mock`;
+        </script>
     </head>
     <body>
         <main>
@@ -23,6 +27,10 @@
             </div>
 
             <div id="container">
+                <div style="display: flex; justify-content: end; margin-bottom: 1rem;">
+                    <button onclick="mock()">generate mock alerts</button>
+                </div>
+
                 <form>
                     <div id="live-tracking">
                         <p>content loading, please wait...</p>

@@ -199,10 +199,15 @@ form {
     width: 100%;
     background: #152233;
     opacity: 0.93;
-    padding: 16px;
     border: 3px solid #2360A5;
 
     border-radius: 1.5rem;
+
+}
+
+form > div {
+
+    padding: 16px;
 
 }
 
@@ -223,13 +228,18 @@ input, select{
 
 }
 
+button {
+
+    cursor: pointer;
+
+}
+
 #submit button {
 
     border: 2px solid #2360A5;
     padding: 16px 85px;
     font-weight: bold;
     font-size: 30px;
-    cursor: pointer;
     background: #152233;
     opacity: 1.0;
     color: white;

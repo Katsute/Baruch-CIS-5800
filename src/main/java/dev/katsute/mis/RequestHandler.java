@@ -168,12 +168,13 @@ final class RequestHandler implements SimpleHttpHandler {
                     for(final Bus.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
                             if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                                final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
+                                final String description = alert.getDescription() != null ? alert.getDescription().trim() : "";
+                                final String desc = description.toLowerCase();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
                                     .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                    .set("description", desc.trim())
-                                    .set("description_translated", translate(desc.trim(), "en", lang))
+                                    .set("description", description)
+                                    .set("description_translated", translate(description, "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -206,12 +207,13 @@ final class RequestHandler implements SimpleHttpHandler {
                 for(final Bus.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
                         if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                            final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
+                            final String description = alert.getDescription() != null ? alert.getDescription().trim() : "";
+                            final String desc = description.toLowerCase();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
                                 .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                .set("description", desc.trim())
-                                .set("description_translated", translate(desc.trim(), "en", lang))
+                                .set("description", description)
+                                .set("description_translated", translate(description, "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -303,12 +305,13 @@ final class RequestHandler implements SimpleHttpHandler {
                     for(final Subway.Alert alert : alerts){
                         for(final TransitAlertPeriod per : alert.getActivePeriods()){
                             if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                                final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
+                                final String description = alert.getDescription() != null ? alert.getDescription().trim() : "";
+                                final String desc = description.toLowerCase();
                                 a.add(new JsonBuilder()
                                     .set("header", alert.getHeader())
                                     .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                    .set("description", desc.trim())
-                                    .set("description_translated", translate(desc.trim(), "en", lang))
+                                    .set("description", description)
+                                    .set("description_translated", translate(description, "en", lang))
                                     .set("type", alert.getAlertType())
                                     .set("effect", alert.getEffect())
                                     .set("slow", desc.contains("slow") || desc.contains("delay"))
@@ -344,12 +347,13 @@ final class RequestHandler implements SimpleHttpHandler {
                 for(final Subway.Alert alert : r.getAlerts()){
                     for(final TransitAlertPeriod per : alert.getActivePeriods()){
                         if(per.getStartEpochMillis() != null && per.getStartEpochMillis() <= NOW && per.getEndEpochMillis() != null && per.getEndEpochMillis() >= NOW){
-                            final String desc = alert.getDescription() != null ? alert.getDescription().toLowerCase() : "";
+                            final String description = alert.getDescription() != null ? alert.getDescription().trim() : "";
+                            final String desc = description.toLowerCase();
                             a.add(new JsonBuilder()
                                 .set("header", alert.getHeader())
                                 .set("header_translated", translate(alert.getHeader().trim(), "en", lang))
-                                .set("description", desc.trim())
-                                .set("description_translated", translate(desc.trim(), "en", lang))
+                                .set("description", description)
+                                .set("description_translated", translate(description, "en", lang))
                                 .set("type", alert.getAlertType())
                                 .set("effect", alert.getEffect())
                                 .set("slow", desc.contains("slow") || desc.contains("delay"))
