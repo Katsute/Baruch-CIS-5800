@@ -54,6 +54,7 @@ final class Main {
                     System.out.println("Checking for data resource " + file.getName());
                     if(!file.exists()){
                         System.out.println("" + file.getName() + " not found, downloading from the MTA ...");
+                        file.createNewFile();
                         try(final FileOutputStream OUT = new FileOutputStream(file)){
                             byte[] buffer = new byte[1024];
                             int bytesReads;
